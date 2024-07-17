@@ -1,0 +1,31 @@
+/* LoginStyle.css */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: /*#c0c0c0*/url('../assets/login/background.jpg') no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+  .container_primary{
+    width: 420px;
+    background: rgba( 30, 21, 75, .7 );
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
+    border-radius: 10px;
+    padding: 15px 40px;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .content-box{
+    background: rgba( 52, 45, 113, 0.5 );
+    border: 2px solid rgba(255,255,255, .2);
+    border-radius: 10px;
+    backdrop-filter: blur( 7.5px );
+    -webkit-backdrop-filter: blur( 7.5px );
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    padding: 30px 40px;
+  }
