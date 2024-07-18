@@ -3,5 +3,5 @@ Integrantes:
 * Baldeon Luis
 * Bazan Steven
 * Revelo jose
-* Yagual Hugito UG
+* Yagual Hugo
 
