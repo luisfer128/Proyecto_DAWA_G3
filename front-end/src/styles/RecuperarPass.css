@@ -9,4 +9,13 @@
     color: #fff;
     border: 1px solid rgba(255, 255, 255, 0.2);
   }
-  
+.body-form-recover{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  min-height: 100%;
+  background: url('../assets/login/background.jpg') no-repeat;
+  background-size: cover;
+  background-position: center;
+}

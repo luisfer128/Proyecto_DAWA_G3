@@ -19,7 +19,7 @@ function RecuperarPass() {
     };
 
     return (
-        <Box
+        <Box className="body-form-recover"
             sx={{
                 display: 'flex',
                 flexDirection: 'column',

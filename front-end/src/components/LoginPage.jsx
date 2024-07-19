@@ -58,7 +58,7 @@ function LoginPage({ onLogin }) {
         navigate('/recuperar-pass');
     };
     return (
-        <Box className="body"
+        <Box className="body-form-login"
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -166,7 +166,7 @@ function LoginPage({ onLogin }) {
                     </Grid>
                 </Grid>
             ) : (
-                <Grid container spacing={2} sx={{ display: 'flex', alignItems: 'center'}}>
+                <Grid className="body-form-register" container spacing={2} sx={{ display: 'flex', alignItems: 'center'}}>
                     <Grid item xs={8}>
                         <Box className="container_primary">
                             <Typography component="h1" variant="h4" color="text.primary" 
