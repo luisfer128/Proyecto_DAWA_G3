@@ -1,0 +1,3 @@
+14:45:46 - ERR - login - (TypeError("unhashable type: 'dict'"),)
+15:37:53 - ERR - post - (NameError("name 'internal_response' is not defined"),)
+15:38:05 - ERR - post - (NameError("name 'internal_response' is not defined"),)

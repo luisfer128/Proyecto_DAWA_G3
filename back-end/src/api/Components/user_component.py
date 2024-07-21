@@ -11,7 +11,23 @@ class UserComponent:
             result = False
             data = None
             message = None
-            sql = "SELECT * FROM segu_user"
+            sql = """
+                SELECT 
+                    u."Id_user",
+                    u.usuario,
+                    u.nombres,
+                    u.mail,
+                    u.locked,
+                    u.last_login,
+                    c.nombre_carrera AS carrera,
+                    f.nombre_facultad AS facultad
+                FROM 
+                    "user" u
+                    JOIN "carrera" c ON u."Id_carrera" = c."Id_carrera"
+                    JOIN "facultad" f ON c."Id_facultad" = f."Id_facultad"
+                WHERE 
+                    u.estado = true; 
+            """
 
             result_user = DataBaseHandle.getRecords(sql, 0)
             if result_user['result']:

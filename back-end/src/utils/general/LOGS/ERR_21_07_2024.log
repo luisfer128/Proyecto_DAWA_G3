@@ -1,0 +1,5 @@
+15:45:35 - ERR - getRecords - (UndefinedColumn("no existe la columna «id_user»\nLINE 1: SELECT count(*) as count FROM amigos WHERE Id_user = '1' AND...\n                                                   ^\nHINT:  Probablemente quiera hacer referencia a la columna «amigos.Id_user».\n"),)
+15:47:44 - ERR - add_friend - (AttributeError("type object 'DataBaseHandle' has no attribute 'execute'"),)
+15:49:00 - ERR - add_friend - (AttributeError("type object 'DataBaseHandle' has no attribute 'execute'"),)
+15:49:19 - ERR - add_friend - (AttributeError("type object 'DataBaseHandle' has no attribute 'execute'"),)
+15:51:28 - ERR - getRecords - (UndefinedColumn("no existe la columna «id_user»\nLINE 1: SELECT count(*) as count FROM amigos WHERE Id_user = '1' AND...\n                                                   ^\nHINT:  Probablemente quiera hacer referencia a la columna «amigos.Id_user».\n"),)
