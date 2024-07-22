@@ -1,11 +1,10 @@
-#Permitir conectarme a una base de datos PostgreSQl
+from ..general.logs import HandleLogs
+from ..general.response import internal_response
+from datetime import datetime
 import psycopg2
 import psycopg2.extras
 from psycopg2.extras import RealDictCursor
 from ..general.config import Parametros
-from ..general.logs import HandleLogs
-from ..general.response import internal_response
-from datetime import datetime
 
 def conn_db():
     return psycopg2.connect(host=Parametros.db_host,
@@ -14,9 +13,6 @@ def conn_db():
                             password=Parametros.db_pass,
                             database=Parametros.db_name,
                             cursor_factory=RealDictCursor)
-
-
-from datetime import datetime
 
 class DataBaseHandle:
     # Ejecuta métodos de tipo SELECT
@@ -68,21 +64,32 @@ class DataBaseHandle:
 
     # Ejecuta métodos de tipo INSERT, UPDATE, DELETE
     @staticmethod
-    def ExecuteNonQuery(query, record=()):
+    def ExecuteNonQuery(query, record=(), fetch_id=False):
         try:
             result = False
             message = None
+            data = None
 
             conn = conn_db()
             cursor = conn.cursor()
             cursor.execute(query, record)
             conn.commit()
 
-            result = True
+            if fetch_id:
+                data = cursor.fetchone()
+                if data:
+                    data = list(data.values())[0]
+
+            # Verifica si se realizó alguna modificación
+            if cursor.rowcount > 0:
+                result = True
+            else:
+                message = "No se realizó ninguna modificación."
+
         except Exception as ex:
             HandleLogs.write_error(ex)
             message = ex.__str__()
         finally:
             cursor.close()
             conn.close()
-            return internal_response(result, None, message)
+            return internal_response(result, data, message)

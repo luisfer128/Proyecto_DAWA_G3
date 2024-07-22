@@ -5,11 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f624418-0bd1-458f-a002-96eb9595a1ad" name="Changes" comment="Update README.md">
-      <change afterPath="$PROJECT_DIR$/back-end/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Components/register_component.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Components/unfriends_component.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Model/Request/register_request.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Model/Request/unfriends_request.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Services/register_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Services/unfriends_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_17_07_2024.log" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_17_07_2024.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/utils/general/config.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/general/config.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/api/Routes/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Routes/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/utils/database/connection_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/database/connection_db.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,15 +71,17 @@
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Python.app.executor": "Run",
+    "Python.prueba.executor": "Run",
+    "Python.xd.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/Luis/Desktop/Prueba-docker",
+    "last_opened_file_path": "C:/Users/Luis/Desktop/pruebas/xd.py",
     "settings.editor.selected.configurable": "Errors"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.app">
     <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Proyecto_DAWA_G3" />
       <option name="ENV_FILES" value="" />
@@ -99,9 +105,55 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="prueba" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Proyecto_DAWA_G3" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/back-end/src/api/Components" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/back-end/src/api/Components/prueba.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="xd" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Proyecto_DAWA_G3" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../pruebas" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../../pruebas/xd.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.app" />
+        <item itemvalue="Python.prueba" />
+        <item itemvalue="Python.xd" />
       </list>
     </recent_temporary>
   </component>
