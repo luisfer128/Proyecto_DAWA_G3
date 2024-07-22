@@ -18,15 +18,15 @@ class FriendsComponent:
 
             if resul_check['result']:
                 if resul_check['data']['count'] == 0:
-                    # Agregar amigos en ambas direcciones
+                    # Agregar amigos
                     sql_add_friend = ("INSERT INTO amigos (\"Id_user\", \"Id_amigo\") "
-                                      "VALUES (%s, %s), (%s, %s)")
-                    add_record = (Id_user, Id_amigo, Id_amigo, Id_user)
+                                      "VALUES (%s, %s)")
+                    add_record = (Id_user, Id_amigo)
                     resul_add = DataBaseHandle.ExecuteNonQuery(sql_add_friend, add_record)
 
                     if resul_add['result']:
                         result = True
-                        message = "Amigo agregado exitosamente en ambas direcciones"
+                        message = "Amigo agregado exitosamente"
                     else:
                         message = resul_add['message']
                 else:

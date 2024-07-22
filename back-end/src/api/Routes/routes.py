@@ -1,12 +1,15 @@
 from ..Services.login_service import LoginService
 from ..Services.user_service import UserService
 from ..Services.add_friend_service import AddFriendService
+from ..Services.publicacion_service import GetFriendPublicationsService
 
 def load_routes(api):
-    #metodo para el login
+    # Metodo para el login
     api.add_resource(LoginService, '/segu/login')
-    #metodo para listar los usuarios
+    # Metodo para listar los usuarios
     api.add_resource(UserService, '/user/list')
-    # metodo para agregar amigo
+    # Metodo para agregar amigo
     api.add_resource(AddFriendService, '/user/add_friend')
+    # Metodo para obtener publicaciones de amigos
+    api.add_resource(GetFriendPublicationsService, '/api/publications')
 

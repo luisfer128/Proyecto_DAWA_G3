@@ -5,7 +5,7 @@ from psycopg2.extras import RealDictCursor
 from ..general.config import Parametros
 from ..general.logs import HandleLogs
 from ..general.response import internal_response
-
+from datetime import datetime
 
 def conn_db():
     return psycopg2.connect(host=Parametros.db_host,
@@ -16,9 +16,10 @@ def conn_db():
                             cursor_factory=RealDictCursor)
 
 
+from datetime import datetime
+
 class DataBaseHandle:
-    #Nuestros Metodos para ejecutar sentencias.
-    #ejecuta metodos de tipo select
+    # Ejecuta métodos de tipo SELECT
     @staticmethod
     def getRecords(query, tamanio, record=()):
         try:
@@ -32,13 +33,28 @@ class DataBaseHandle:
                 cursor.execute(query)
             else:
                 cursor.execute(query, record)
-            # tamanio es 0 todos, 1 solo uno, > 1 n registros
+
+            # Tamaño es 0 todos, 1 solo uno, > 1 n registros
             if tamanio == 0:
                 res = cursor.fetchall()
             elif tamanio == 1:
                 res = cursor.fetchone()
             else:
                 res = cursor.fetchmany(tamanio)
+
+            # Verifica el tipo de `res` antes de procesarlo
+            if isinstance(res, list):
+                # Convertir fechas a cadenas en formato ISO 8601
+                for row in res:
+                    if isinstance(row, dict):
+                        for key, value in row.items():
+                            if isinstance(value, datetime):
+                                row[key] = value.isoformat()
+            elif isinstance(res, dict):
+                # Si `res` es un solo diccionario, también convierte las fechas
+                for key, value in res.items():
+                    if isinstance(value, datetime):
+                        res[key] = value.isoformat()
 
             data = res
             result = True
@@ -50,27 +66,18 @@ class DataBaseHandle:
             conn.close()
             return internal_response(result, data, message)
 
-    #ejecuta metodos de tipo INSERT-UPDATE-DELETE
+    # Ejecuta métodos de tipo INSERT, UPDATE, DELETE
     @staticmethod
-    def ExecuteNonQuery(query, record):
+    def ExecuteNonQuery(query, record=()):
         try:
             result = False
             message = None
-            data = None
+
             conn = conn_db()
             cursor = conn.cursor()
-            if len(record) == 0:
-                cursor.execute(query)
-            else:
-                cursor.execute(query, record)
+            cursor.execute(query, record)
+            conn.commit()
 
-            if query.find('INSERT') > -1:
-                cursor.execute('SELECT LASTVAL()')
-                ult_id = cursor.fetchone()['lastval']
-                conn.commit()
-                data = ult_id
-            else:
-                data = 0
             result = True
         except Exception as ex:
             HandleLogs.write_error(ex)
@@ -78,4 +85,4 @@ class DataBaseHandle:
         finally:
             cursor.close()
             conn.close()
-            return internal_response(result, data, message)
+            return internal_response(result, None, message)

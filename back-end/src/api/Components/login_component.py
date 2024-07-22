@@ -1,3 +1,4 @@
+from datetime import datetime
 from ...utils.general.logs import HandleLogs
 from ...utils.general.response import internal_response
 from ...utils.database.connection_db import DataBaseHandle
@@ -12,8 +13,10 @@ class LoginComponent:
 
         try:
             # Verificar credenciales de login
-            sql_login = ("SELECT count(*) as valor FROM \"user\" "
-                         "WHERE usuario = %s AND password = %s AND estado = true")
+            sql_login = """
+            SELECT count(*) as valor FROM "user"
+            WHERE usuario = %s AND password = %s AND estado = true
+            """
             login_record = (p_user, p_clave)
             resul_login = DataBaseHandle.getRecords(sql_login, 1, login_record)
 
@@ -65,9 +68,21 @@ class LoginComponent:
                             "carrera": data_result['data'][0]['nombre_carrera'],
                             "facultad": data_result['data'][0]['nombre_facultad'],
                             "locked": data_result['data'][0]['locked'],
-                            "last_login": data_result['data'][0]['last_login'].strftime("%Y-%m-%d %H:%M:%S") if data_result['data'][0]['last_login'] else None,
-                            "roles": []
+                            "last_login": None
                         }
+
+                        # Verificar si last_login es un datetime antes de formatear
+                        if data_result['data'][0]['last_login']:
+                            last_login = data_result['data'][0]['last_login']
+                            if isinstance(last_login, str):
+                                try:
+                                    last_login = datetime.fromisoformat(last_login)
+                                except ValueError:
+                                    last_login = None
+                            if isinstance(last_login, datetime):
+                                user_data["last_login"] = last_login.strftime("%Y-%m-%d %H:%M:%S")
+
+                        user_data["roles"] = []
 
                         roles = {}
                         modules = {}
