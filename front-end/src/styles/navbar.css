@@ -1,0 +1,9 @@
+.logo{
+    width: 40px;
+    height: 40px;
+    padding-right: 12px;
+}
+
+.icon-button-hover:hover {
+    background-color: yellow;
+}
