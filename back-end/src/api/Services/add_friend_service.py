@@ -4,12 +4,19 @@ from src.api.Components.friends_component import FriendsComponent
 from src.api.Model.Request.add_friend_request import AddFriendRequest
 from flask import request
 from flask_restful import Resource
+from ..Components.jwt_component import  JwtComponent
+
 
 class AddFriendService(Resource):
     @staticmethod
     def post():
         try:
             HandleLogs.write_log("Ejecutando servicio de agregar amigo")
+
+            token = request.headers['tokenapp']
+            if not JwtComponent.TokenValidate(token):
+                return response_error("token de autenticacion NO valido")
+
             rq_json = request.get_json()
             new_request = AddFriendRequest()
             error_en_validacion = new_request.validate(rq_json)

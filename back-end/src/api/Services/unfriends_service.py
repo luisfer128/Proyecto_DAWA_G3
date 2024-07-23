@@ -4,12 +4,18 @@ from ..Components.unfriends_component import UnfriendComponent
 from ..Model.Request.unfriends_request import UnfriendRequest
 from flask import request
 from flask_restful import Resource
+from ..Components.jwt_component import  JwtComponent
 
 class UnfriendService(Resource):
     @staticmethod
     def delete():
         try:
             HandleLogs.write_log("Ejecutando servicio de eliminar amigo")
+
+            token = request.headers['tokenapp']
+            if not JwtComponent.TokenValidate(token):
+                return response_error("token de autenticacion NO valido")
+
             rq_json = request.get_json()
             unfriend_request = UnfriendRequest()
             error_en_validacion = unfriend_request.validate(rq_json)
