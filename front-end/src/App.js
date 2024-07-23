@@ -6,26 +6,26 @@ import RecuperarPass from './components/RecuperarPass';
 import HomePage from './components/HomePage';
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [roles, setRoles] = useState([]);
+    const [user, setUser] = useState(null);
+    const [roles, setRoles] = useState([]);
 
-  const handleLoginSuccess = (data) => {
-    setUser(data.user);
-    setRoles(data.rols);
-  };
-
-  return (
-    <Router>
-      <Routes>
-        <Route path="/recuperar-pass" element={<RecuperarPass />} />
-        <Route path="*" element={<LoginPage onLoginSuccess={handleLoginSuccess} />} /> {/* Default to LoginPage */}
-        <Route
-          path="/home"
-          element={!user ? <LoginPage onLoginSuccess={handleLoginSuccess} /> : <HomePage user={user} roles={roles} />}
-        />
-      </Routes>
-    </Router>
-  );
+    const handleLoginSuccess = (data) => {
+        setUser(data.user);
+        setRoles(data.rols);
+    };
+  
+    return (
+        <Router>
+            <Routes>
+                <Route path="/recuperar-pass" element={<RecuperarPass />} />
+                <Route path="*" element={<LoginPage onLoginSuccess={handleLoginSuccess} />} /> {/* Default to LoginPage */}
+                <Route 
+                    path="/home" 
+                    element={user ? <HomePage user={user} roles={roles} /> : <LoginPage onLoginSuccess={handleLoginSuccess} />} 
+                />
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;

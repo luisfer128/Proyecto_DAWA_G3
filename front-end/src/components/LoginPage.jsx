@@ -26,6 +26,7 @@ function LoginPage({ onLoginSuccess }) {
                 login_user,
                 login_password,
             });
+            // console.log('Login Response:', response.data); // Agrega esta línea para verificar la respuesta
 
             if (!response.data.result) {
                 throw new Error(response.data.message);
