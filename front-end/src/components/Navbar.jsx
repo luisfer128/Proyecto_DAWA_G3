@@ -18,6 +18,7 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import logo from "../assets/login/logo.svg";
 import '../styles/navbar.css';
 
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
