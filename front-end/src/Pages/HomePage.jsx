@@ -1,8 +1,8 @@
 import React from 'react';
 import { Grid } from '@mui/material';
-import PostComponet from './PostComponet';
-import Prueba from './Pruebas';
-import Navbar from './Navbar';
+import PostComponet from '../components/PostComponet';
+import Prueba from '../components/Pruebas';
+import Navbar from '../components/Navbar';
 
 const HomePage = ({user, roles}) => {
     return (

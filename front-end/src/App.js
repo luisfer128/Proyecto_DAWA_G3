@@ -1,9 +1,10 @@
 import './App.css';
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LoginPage from './components/LoginPage';
-import RecuperarPass from './components/RecuperarPass';
-import HomePage from './components/HomePage';
+import LoginPage from './Pages/LoginPage';
+import RecuperarPass from './Pages/RecuperarPass';
+import HomePage from './Pages/HomePage';
+import Register from './Pages/RegisterForm';
 
 function App() {
     const [user, setUser] = useState(null);
@@ -18,6 +19,7 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/recuperar-pass" element={<RecuperarPass />} />
+                <Route path="/registro" element={<Register />} />
                 <Route path="*" element={<LoginPage onLoginSuccess={handleLoginSuccess} />} /> {/* Default to LoginPage */}
                 <Route 
                     path="/home" 
