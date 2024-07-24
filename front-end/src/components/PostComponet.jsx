@@ -5,7 +5,7 @@ import axios from 'axios';
 const Post = ({ title, content, comments }) => (
     <Paper elevation={3} sx={{ padding: '16px', marginBottom: '16px' }}>
         <Typography variant="h6">{title}</Typography>
-        <Typography variant="body1">{content}</Typography>
+        <Typography variant="body1">{content || "No hay texto en la publicación"}</Typography>
         {comments && comments.length > 0 && (
             <div style={{ marginTop: '16px' }}>
                 <Typography variant="subtitle1">Comentarios:</Typography>
@@ -29,18 +29,19 @@ function PostComponent({ user_id }) {
             try {
                 const token = sessionStorage.getItem('token');
                 if (!token) {
-                    throw new Error('Token no encontrado');
+                    throw new Error('No token found');
                 }
+                //console.log("User ID:", user_id); // Log para verificar el ID de usuario
 
                 const response = await axios.post('http://26.127.175.34:5000/api/publications', {
                     user_id,
                 }, {
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'tokenapp': token
                     }
                 });
 
-                console.log('Publicaciones Response:', response.data);
+                //console.log('Publicaciones Response:', response.data);
 
                 if (response.data.result) {
                     setPosts(response.data.data);
@@ -71,14 +72,20 @@ function PostComponent({ user_id }) {
             <Grid container spacing={3} sx={{ marginTop: '16px' }}>
                 <Grid item xs={12} md={3}></Grid>
                 <Grid item xs={12} md={6}>
-                    {posts.map((post, index) => (
-                        <Post
-                            key={index}
-                            title={`Post by ${post.publicacion_user_name}`}
-                            content={post.texto}
-                            comments={post.comentarios}
-                        />
-                    ))}
+                    {posts.length > 0 ? (
+                        posts.map((post, index) => (
+                            <Post
+                                key={index}
+                                title={`Post by ${post.publicacion_user_name}`}
+                                content={post.texto}
+                                comments={post.comentarios}
+                            />
+                        ))
+                    ) : (
+                        <Typography variant="body1" sx={{ marginTop: '16px', textAlign: 'center' }}>
+                            No se encontraron publicaciones.
+                        </Typography>
+                    )}
                 </Grid>
             </Grid>
         </Container>

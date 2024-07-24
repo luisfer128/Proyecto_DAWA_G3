@@ -28,9 +28,7 @@ function LoginPage({ onLoginSuccess }) {
             }
             
             // Almacena el token en sessionStorage
-            sessionStorage.setItem('tokenapp', response.data.data.token);
-            
-            onLoginSuccess(response.data.data);
+            onLoginSuccess(response.data.data.token, response.data.data.user_data);
             navigate('/home');
         } catch (error) {
             setError('Usuario o contraseña incorrectos');
