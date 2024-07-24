@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -17,7 +18,6 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import logo from "../assets/login/logo.svg";
 import '../styles/navbar.css';
-
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -62,9 +62,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [friendsAnchorEl, setFriendsAnchorEl] = React.useState(null);
+
+  const navigate = useNavigate(); // Inicializa useNavigate
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const isFriendsMenuOpen = Boolean(friendsAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -83,12 +87,25 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleFriendsMenuOpen = (event) => {
+    setFriendsAnchorEl(event.currentTarget);
+  };
+
+  const handleFriendsMenuClose = () => {
+    setFriendsAnchorEl(null);
+  };
+
+  const handleProfileClick = () => {
+    handleMenuClose();
+    navigate('/perfil'); // Navega a la página de perfil
+  };
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
-        vertical: 'top',
+        vertical: 'bottom',
         horizontal: 'right',
       }}
       id={menuId}
@@ -100,7 +117,8 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Perfil</MenuItem>
+      <MenuItem onClick={handleProfileClick}>Perfil</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Configuracion</MenuItem>
       <MenuItem onClick={handleMenuClose}>Cerrar Sesion</MenuItem>
     </Menu>
   );
@@ -110,7 +128,7 @@ export default function PrimarySearchAppBar() {
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
-        vertical: 'top',
+        vertical: 'bottom',
         horizontal: 'right',
       }}
       id={mobileMenuId}
@@ -129,7 +147,7 @@ export default function PrimarySearchAppBar() {
           color="inherit"
           sx={{
             '&:hover': {
-              backgroundColor: 'yellow',
+              backgroundColor: '#00539f',
             },
           }}
         >
@@ -146,7 +164,7 @@ export default function PrimarySearchAppBar() {
           color="inherit"
           sx={{
             '&:hover': {
-              backgroundColor: 'yellow',
+              backgroundColor: '#00539f',
             },
           }}
         >
@@ -165,7 +183,7 @@ export default function PrimarySearchAppBar() {
           color="inherit"
           sx={{
             '&:hover': {
-              backgroundColor: 'yellow',
+              backgroundColor: '#00539f',
             },
           }}
         >
@@ -173,6 +191,28 @@ export default function PrimarySearchAppBar() {
         </IconButton>
         <p>Profile</p>
       </MenuItem>
+    </Menu>
+  );
+
+  const renderFriendsMenu = (
+    <Menu
+      anchorEl={friendsAnchorEl}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left',
+      }}
+      id="friends-menu"
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'left',
+      }}
+      open={isFriendsMenuOpen}
+      onClose={handleFriendsMenuClose}
+    >
+      <MenuItem onClick={handleFriendsMenuClose}>Amigos</MenuItem>
+      <MenuItem onClick={handleFriendsMenuClose}>Amigo</MenuItem>
+      <MenuItem onClick={handleFriendsMenuClose}>Amigo</MenuItem>
     </Menu>
   );
 
@@ -188,9 +228,10 @@ export default function PrimarySearchAppBar() {
             sx={{ 
               mr: 2,
               '&:hover': {
-                  backgroundColor: '#00539f',
-                },
+                backgroundColor: '#00539f',
+              },
             }}
+            onClick={handleFriendsMenuOpen} // Open friends menu on click
           >
             <MenuIcon />
           </IconButton>
@@ -275,6 +316,7 @@ export default function PrimarySearchAppBar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      {renderFriendsMenu}
     </Box>
   );
 }

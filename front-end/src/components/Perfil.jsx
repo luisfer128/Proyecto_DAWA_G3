@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Box, Container, Avatar, Typography, Tabs, Tab, Grid, Paper, List, ListItem, ListItemText, Button, IconButton, TextField } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/Comment';
+import PrimarySearchAppBar from './Navbar'; // Make sure to adjust the import path accordingly
 
-const ProfilePage = () => {
+const Perfil = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [newPostText, setNewPostText] = useState('');
 
@@ -28,9 +29,9 @@ const ProfilePage = () => {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <Paper sx={{ p: 2 }}>
-                <Typography variant="body1">16 de julio a las 6:29 p.m. - Esta es una publicación de ejemplo.</Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-                  <Button variant="outlined" color="error">Borrar Publicación</Button>
+                
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', m: 1 }}>
+                <Typography variant="body1" sx={{ alignContent: 'center'}}>16 de julio a las 6:29 p.m. - Esta es una publicación de ejemplo.</Typography>
                   <Box>
                     <IconButton color="primary">
                       <FavoriteIcon />
@@ -48,7 +49,8 @@ const ProfilePage = () => {
                     multiline
                     rows={2}
                   />
-                  <Button variant="contained" color="primary" sx={{ mt: 1 }}>Comentar</Button>
+                  <Button variant="contained" color="primary" sx={{ m: 1 }}>Comentar</Button>
+                  <Button variant="outlined" color="error" sx={{ m: 1 }}>Borrar Publicación</Button>
                 </Box>
               </Paper>
             </Grid>
@@ -105,48 +107,51 @@ const ProfilePage = () => {
   };
 
   return (
-    <Container maxWidth="md" sx={{ bgcolor: 'white', p: 2 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', mt: 4 }}>
-        <Avatar 
-          alt="Profile Picture" 
-          src="/path/to/your/profile/picture.jpg" 
-          sx={{ width: 120, height: 120, mr: 3 }}
-        />
-        <Typography variant="h4">Alexis Yagual</Typography>
-      </Box>
-      
-      <Box sx={{ mt: 4 }}>
-        <Tabs value={selectedTab} onChange={handleTabChange} aria-label="profile tabs">
-          <Tab label="Publicaciones" />
-          <Tab label="Información" />
-          <Tab label="Amigos" />
-        </Tabs>
-      </Box>
-
-      {selectedTab === 0 && (
-        <Box sx={{ mt: 4 }}>
-          <Paper sx={{ p: 2 }}>
-            <Typography variant="h6">¿En qué estás pensando?</Typography>
-            <TextField
-              fullWidth
-              variant="outlined"
-              placeholder="Escribe algo..."
-              multiline
-              rows={2}
-              value={newPostText}
-              onChange={handleNewPostTextChange}
-              sx={{ mt: 2 }}
-            />
-            <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleNewPost}>Publicar</Button>
-          </Paper>
+    <>
+      <PrimarySearchAppBar />
+      <Container maxWidth="md" sx={{ background:"white" , borderRadius: "10px", mt: 4, p: 3 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center'}}>
+          <Avatar 
+            alt="Profile Picture" 
+            src="/path/to/your/profile/picture.jpg" 
+            sx={{ width: 120, height: 120, mr: 3 }}
+          />
+          <Typography variant="h4">Alexis Yagual</Typography>
         </Box>
-      )}
+        
+        <Box sx={{ mt: 4 }}>
+          <Tabs value={selectedTab} onChange={handleTabChange} aria-label="profile tabs">
+            <Tab label="Publicaciones" />
+            <Tab label="Información" />
+            <Tab label="Amigos" />
+          </Tabs>
+        </Box>
 
-      <Box sx={{ mt: 4 }}>
-        {renderTabContent()}
-      </Box>
-    </Container>
+        {selectedTab === 0 && (
+          <Box sx={{ mt: 4 }}>
+            <Paper sx={{ p: 2 }}>
+              <Typography variant="h6">¿En qué estás pensando?</Typography>
+              <TextField
+                fullWidth
+                variant="outlined"
+                placeholder="Escribe algo..."
+                multiline
+                rows={2}
+                value={newPostText}
+                onChange={handleNewPostTextChange}
+                sx={{ mt: 2 }}
+              />
+              <Button variant="contained" color="primary" sx={{ m: 1 }} onClick={handleNewPost}>Publicar</Button>
+            </Paper>
+          </Box>
+        )}
+
+        <Box sx={{ mt: 4 }}>
+          {renderTabContent()}
+        </Box>
+      </Container>
+    </>
   );
 };
 
-export default ProfilePage;
+export default Perfil;
