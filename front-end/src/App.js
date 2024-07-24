@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import RecuperarPass from './components/RecuperarPass';
 import HomePage from './components/HomePage';
+import Perfil from './components/Perfil';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -18,6 +19,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/recuperar-pass" element={<RecuperarPass />} />
+        <Route path="/perfil" element={<Perfil />} />
         <Route path="*" element={<LoginPage onLoginSuccess={handleLoginSuccess} />} /> {/* Default to LoginPage */}
         <Route
           path="/home"
