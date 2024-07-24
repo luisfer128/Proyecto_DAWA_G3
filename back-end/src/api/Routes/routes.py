@@ -10,6 +10,7 @@ from ..Services.unlike_service import UnlikeResource
 from ..Services.comment_service import CommentResource
 from ..Services.amigo_sugerido_service import SuggestedFriendsResource
 from ..Services.amigos_usuario_service import FriendsResource
+from ..Services.carreras_get_service import CareersResource
 
 
 def load_routes(api):
@@ -37,3 +38,5 @@ def load_routes(api):
     api.add_resource(SuggestedFriendsResource, '/user/suggested_friends')
     # Método para obtener todos los amigos del usuario
     api.add_resource(FriendsResource, '/user/get_friends')
+    # Método para obtener todas las carreras
+    api.add_resource(CareersResource, '/api/carreras')
