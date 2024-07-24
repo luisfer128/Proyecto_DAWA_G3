@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Grid, Typography, Paper, CircularProgress } from '@mui/material';
+import axios from 'axios';
 
 const Post = ({ title, content, comments }) => (
     <Paper elevation={3} sx={{ padding: '16px', marginBottom: '16px' }}>
@@ -18,7 +19,7 @@ const Post = ({ title, content, comments }) => (
     </Paper>
 );
 
-function PostComponent() {
+function PostComponent({ user_id }) {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -26,28 +27,20 @@ function PostComponent() {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await fetch('http://26.127.175.34:5000/api/publications', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                const response = await axios.post('http://26.127.175.34:5000/api/publications', {
+                    user_id, 
                 });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setPosts(data.data);
-                } else {
-                    setError('Error no se encontaron posts');
-                }
+                console.log('Publicaciones Response:', response.data);
+                setPosts(response.data.data);
             } catch (err) {
-                setError('Error, no existen posts');
+                setError('Error, no se encontraron posts');
             } finally {
                 setLoading(false);
             }
         };
 
         fetchPosts();
-    }, []);
+    }, [user_id]);
 
     if (loading) {
         return <CircularProgress />;
@@ -71,7 +64,7 @@ function PostComponent() {
                         />
                     ))}
                 </Grid>
-                <Grid item xs={12} md={3}></Grid>
+                
             </Grid>
         </Container>
     );

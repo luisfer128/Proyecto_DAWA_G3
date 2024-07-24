@@ -3,6 +3,7 @@ from src.utils.general.response import response_error, response_success, respons
 from src.api.Components.user_component import UserComponent
 from flask import request
 from flask_restful import Resource
+from ..Components.jwt_component import  JwtComponent
 
 
 class UserService(Resource):
@@ -10,6 +11,11 @@ class UserService(Resource):
     def get():
         try:
             HandleLogs.write_log("Ejecutando servicio de Listar Usuario")
+
+            token = request.headers['tokenapp']
+            if not JwtComponent.TokenValidate(token):
+                return response_error("token de autenticacion NO valido")
+
             resultado = UserComponent.getAllUsers()
             if resultado['result']:
                 if resultado['data'].__len__() > 0:

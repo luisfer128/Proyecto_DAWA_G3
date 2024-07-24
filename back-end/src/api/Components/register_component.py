@@ -1,6 +1,7 @@
 from src.utils.general.logs import HandleLogs
 from src.utils.general.response import internal_response
 from src.utils.database.connection_db import DataBaseHandle
+from ..Segu.segu_hash import HashPassword  # Asegúrate de importar la clase HashPassword
 
 
 class RegisterComponent:
@@ -21,11 +22,16 @@ class RegisterComponent:
                 message = "Usuario o correo ya registrados" if resul_check['data']['count'] > 0 else resul_check['message']
                 return internal_response(result, None, message)
 
-            # Registrar nuevo usuario sin hashear la contraseña
+            # Registrar nuevo usuario hasheando la contraseña
+            hashed_password = HashPassword.encoder(password)
+            if not hashed_password:
+                message = "Error al hashear la contraseña"
+                return internal_response(result, None, message)
+
             sql_register_user = (
                 "INSERT INTO \"user\" (\"usuario\", \"password\", \"mail\", \"estado\", \"locked\", \"nombres\", \"Id_carrera\") "
                 "VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING \"Id_user\"")
-            register_record = (usuario, password, mail, True, False, nombres, Id_carrera)
+            register_record = (usuario, hashed_password, mail, True, False, nombres, Id_carrera)
             resul_register = DataBaseHandle.ExecuteNonQuery(sql_register_user, register_record, fetch_id=True)
 
             if not resul_register['result']:

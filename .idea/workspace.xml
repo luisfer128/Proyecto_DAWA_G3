@@ -5,15 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f624418-0bd1-458f-a002-96eb9595a1ad" name="Changes" comment="Update README.md">
-      <change afterPath="$PROJECT_DIR$/back-end/src/api/Components/register_component.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back-end/src/api/Components/unfriends_component.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back-end/src/api/Model/Request/register_request.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back-end/src/api/Model/Request/unfriends_request.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back-end/src/api/Services/register_service.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back-end/src/api/Services/unfriends_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Components/jwt_component.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Segu/segu_hash.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/api/Routes/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Routes/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/utils/database/connection_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/database/connection_db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/api/Components/login_component.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Components/login_component.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/api/Components/register_component.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Components/register_component.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/api/Services/add_friend_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Services/add_friend_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/api/Services/publicacion_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Services/publicacion_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/api/Services/unfriends_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Services/unfriends_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/api/Services/user_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Services/user_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/ERR_22_07_2024.log" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/ERR_22_07_2024.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_22_07_2024.log" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_22_07_2024.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/utils/requerimientos.txt" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/requerimientos.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,21 +69,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Python.app.executor": "Run",
-    "Python.prueba.executor": "Run",
-    "Python.xd.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/Luis/Desktop/pruebas/xd.py",
-    "settings.editor.selected.configurable": "Errors"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Python.app.executor&quot;: &quot;Run&quot;,
+    &quot;Python.prueba.executor&quot;: &quot;Run&quot;,
+    &quot;Python.xd.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Luis/Desktop/pruebas/xd.py&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Luis\Desktop\Proyecto G3 - 1.0.0\Proyecto_DAWA_G3\back-end\src\lib" />
+    </key>
+  </component>
   <component name="RunManager" selected="Python.app">
     <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Proyecto_DAWA_G3" />

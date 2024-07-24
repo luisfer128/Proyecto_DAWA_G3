@@ -30,3 +30,4 @@
 13:49:43 - ERR - register_user - ('Error al obtener el Id_user del registro.',)
 13:49:43 - ERR - post - ('Error al registrar usuario -> Error al obtener el Id_user del registro.',)
 13:51:00 - ERR - login - (IndexError('list index out of range'),)
+23:59:16 - ERR - post - (<UnsupportedMediaType '415: Unsupported Media Type'>,)

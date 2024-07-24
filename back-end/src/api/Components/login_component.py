@@ -2,6 +2,9 @@ from datetime import datetime
 from ...utils.general.logs import HandleLogs
 from ...utils.general.response import internal_response
 from ...utils.database.connection_db import DataBaseHandle
+from ..Components.jwt_component import JwtComponent
+from ..Segu.segu_hash import HashPassword
+
 
 class LoginComponent:
 
@@ -14,17 +17,19 @@ class LoginComponent:
         try:
             # Verificar credenciales de login
             sql_login = """
-            SELECT count(*) as valor FROM "user"
-            WHERE usuario = %s AND password = %s AND estado = true
+            SELECT "password" FROM "user"
+            WHERE usuario = %s AND estado = true
             """
-            login_record = (p_user, p_clave)
+            login_record = (p_user,)
             resul_login = DataBaseHandle.getRecords(sql_login, 1, login_record)
 
             if resul_login['result']:
-                if resul_login['data']['valor'] > 0:
+                hashed_password = resul_login['data']['password']
+                if HashPassword.verify(p_clave, hashed_password):
                     result = True
                     message = 'Login Exitoso'
-
+                    # Token
+                    token = JwtComponent.TokenGenerate(p_user)
                     # Obtener datos asociados al rol, módulos y opciones de menú
                     sql_data = """
                     SELECT
@@ -44,7 +49,6 @@ class LoginComponent:
                         JOIN "modulo" m ON me."Id_modulo" = m."Id_modulo"
                     WHERE
                         u.usuario = %s
-                        AND u.password = %s
                         AND u.estado = true
                         AND r.estado = true
                         AND m.estado = true
@@ -53,11 +57,8 @@ class LoginComponent:
                     ORDER BY
                         r."Id_rol", m."Id_modulo", me."Id_menu";
                     """
-                    sql_menu = "SELECT * from menu"
-
-                    data_record = (p_user, p_clave)
+                    data_record = (p_user,)
                     data_result = DataBaseHandle.getRecords(sql_data, 0, data_record)
-                    data_menu = DataBaseHandle.getRecords(sql_menu, 0, data_record)
 
                     if data_result['result']:
                         user_data = {
@@ -110,31 +111,25 @@ class LoginComponent:
                                 roles[row['Id_rol']]["modules"].append(modules[row['Id_modulo']])
 
                             # Agregar menús a los módulos correspondientes
-                            for row2 in data_menu['data']:
-                                if row['Id_modulo'] == row2['Id_modulo']:
-                                    menu_item = {
-                                        "menu_id": row2['Id_menu'],
-                                        "nombre": row2['nombre'],
-                                        "icon_name": row2['icon_name'],
-                                        "descripcion": row2['descripcion']
-                                    }
-                                    if menu_item not in modules[row['Id_modulo']]["menu"]:
-                                        modules[row['Id_modulo']]["menu"].append(menu_item)
+                            menu_item = {
+                                "menu_id": row['Id_menu'],
+                                "nombre": row['menu_nombre'],
+                                "descripcion": row['menu_descripcion'],
+                                "icon_name": row['menu_icon_name']
+                            }
+                            modules[row['Id_modulo']]["menu"].append(menu_item)
 
                         data = {
-                            "user": user_data
+                            'user_data': user_data,
+                            'token': token
                         }
-
-                    else:
-                        message = data_result['message']
                 else:
-                    message = 'Login No Válido'
+                    message = 'Contraseña incorrecta'
             else:
-                message = resul_login['message']
+                message = 'Usuario no encontrado o inactivo'
 
         except Exception as err:
             HandleLogs.write_error(err)
             message = str(err)
 
-        finally:
-            return internal_response(result, data, message)
+        return internal_response(result, data, message)
