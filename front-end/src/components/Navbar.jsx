@@ -100,6 +100,15 @@ export default function PrimarySearchAppBar() {
     navigate('/perfil'); // Navega a la página de perfil
   };
 
+  const handleHomeClick = () => {
+    navigate('/home'); // Navega a la página de inicio
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('tokenapp'); // Elimina el token
+    navigate('/'); // Redirige a la página de login
+  };
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -119,7 +128,7 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem onClick={handleProfileClick}>Perfil</MenuItem>
       <MenuItem onClick={handleMenuClose}>Configuracion</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Cerrar Sesion</MenuItem>
+      <MenuItem onClick={handleLogout}>Cerrar Sesion</MenuItem>
     </Menu>
   );
 
@@ -235,15 +244,18 @@ export default function PrimarySearchAppBar() {
           >
             <MenuIcon />
           </IconButton>
-          <img className="logo" src={logo} alt="logo" />
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            SocialUG
-          </Typography>
+          <Box className="volver_home" sx={{ display: 'flex', justifyContent: 'space-between', cursor: 'pointer' }} onClick={handleHomeClick}>
+            <img className="logo" src={logo} alt="logo" />
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ alignContent: 'center'}}
+              >
+              SocialUG
+            </Typography>
+          </Box>
+          
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
