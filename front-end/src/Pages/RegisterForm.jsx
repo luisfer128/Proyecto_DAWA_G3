@@ -25,22 +25,23 @@ function RegisterForm() {
         setError('');
         try {
             const response = await axios.post('http://26.127.175.34:5000/user/register', {
-                usuario, nombres, password, carrera: selectedCarrera
+                usuario, nombres, password, mail: email, Id_carrera: selectedCarrera
             });
 
             if (!response.data.result) {
                 throw new Error(response.data.message);
             }
-
-            navigate('/home');
+            setModalOpen(true);
+            navigate('../');
         } catch (error) {
-            setError('Error al registrar usuario');
+            setError(error.response ? error.response.data.message : 'Error al registrar usuario');
             setModalOpen(true);
         } finally {
             setLoading(false);
         }
     };
 
+    
     // Fetch de carreras para seleccionar
     useEffect(() => {
         const fetchCarreras = async () => {
@@ -68,7 +69,7 @@ function RegisterForm() {
 
     const handleCloseModal = () => {
         setModalOpen(false);
-    };
+    }
 
     const handleBackToLogin = () => {
         navigate('../');
@@ -121,8 +122,8 @@ function RegisterForm() {
                             <Grid item xs={6}>
                                 <TextField
                                 label="Nombres"
-                                value={usuario}
-                                onChange={(e) => setUsuario(e.target.value)}
+                                value={nombres}
+                                onChange={(e) => setNombres(e.target.value)}
                                 fullWidth
                                 margin="normal"
                                 InputLabelProps={{ style: { color: "white" } }}
@@ -132,8 +133,8 @@ function RegisterForm() {
                             <Grid item xs={6}>
                                 <TextField
                                 label="Username"
-                                value={nombres}
-                                onChange={(e) => setNombres(e.target.value)}
+                                value={usuario}
+                                onChange={(e) => setUsuario(e.target.value)}
                                 fullWidth
                                 margin="normal"
                                 InputLabelProps={{ style: { color: "white" } }}
@@ -169,11 +170,11 @@ function RegisterForm() {
                                 </FormControl>
                             </Grid>
                         </Grid>
-                        {/* {error && (
+                        {error && (
                         <Typography color="error" sx={{ mt: 2 }}>
                             {error}
                         </Typography>
-                        )} */}
+                        )}
                         <Box
                             sx={{
                                 display: "flex",
@@ -232,7 +233,7 @@ function RegisterForm() {
                     </Box>
                 </Grid>
             </Grid>
-            {/* <ModalError open={modalOpen} onClose={handleCloseModal} errorMessage={error} /> */}
+            <ModalError open={modalOpen} onClose={handleCloseModal} errorMessage={error} />
         </Box>
     );
 }
