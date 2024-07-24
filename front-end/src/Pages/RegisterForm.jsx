@@ -13,7 +13,7 @@ function RegisterForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [selectedCarrera, setSelectedCarrera] = useState('');
-    const [carreras, setCarreras] = useState([]); // Inicializa como array vacío
+    const [carreras, setCarreras] = useState([]); 
 
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -21,6 +21,12 @@ function RegisterForm() {
     const navigate = useNavigate();
 
     const handleRegisterSubmit = async () => {
+        if (!usuario || !nombres || !email || !password || !selectedCarrera) {
+            setError('Por favor, completa todos los campos.');
+            setModalOpen(true);
+            return;
+        }
+        
         setLoading(true);
         setError('');
         try {
@@ -170,11 +176,6 @@ function RegisterForm() {
                                 </FormControl>
                             </Grid>
                         </Grid>
-                        {error && (
-                        <Typography color="error" sx={{ mt: 2 }}>
-                            {error}
-                        </Typography>
-                        )}
                         <Box
                             sx={{
                                 display: "flex",
@@ -233,8 +234,9 @@ function RegisterForm() {
                     </Box>
                 </Grid>
             </Grid>
-            <ModalError open={modalOpen} onClose={handleCloseModal} errorMessage={error} />
+            <ModalError open={modalOpen} handleClose={handleCloseModal} errorMessage={error} />
         </Box>
     );
+    
 }
 export default RegisterForm;
