@@ -27,13 +27,29 @@ function PostComponent({ user_id }) {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
+                const token = sessionStorage.getItem('token');
+                if (!token) {
+                    throw new Error('Token no encontrado');
+                }
+
                 const response = await axios.post('http://26.127.175.34:5000/api/publications', {
-                    user_id, 
+                    user_id,
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
                 });
+
                 console.log('Publicaciones Response:', response.data);
-                setPosts(response.data.data);
+
+                if (response.data.result) {
+                    setPosts(response.data.data);
+                } else {
+                    setError(response.data.message || 'Error, no se encontraron posts');
+                }
             } catch (err) {
-                setError('Error, no se encontraron posts');
+                console.error(err);
+                setError(err.message || 'Error, no se encontraron posts');
             } finally {
                 setLoading(false);
             }
@@ -64,7 +80,6 @@ function PostComponent({ user_id }) {
                         />
                     ))}
                 </Grid>
-                
             </Grid>
         </Container>
     );

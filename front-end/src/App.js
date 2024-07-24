@@ -11,9 +11,12 @@ function App() {
     const [roles, setRoles] = useState([]);
 
     const handleLoginSuccess = (data) => {
-        setUser(data.user);
-        setRoles(data.rols);
+        console.log('Login data:', data); // Agrega esta línea para verificar los datos
+        setUser(data.user_data); 
+        setRoles(data.user_data.roles); 
+        sessionStorage.setItem('token', data.token); // Guarda el token en sessionStorage
     };
+    
   
     return (
         <Router>
@@ -21,10 +24,11 @@ function App() {
                 <Route path="/recuperar-pass" element={<RecuperarPass />} />
                 <Route path="/registro" element={<Register />} />
                 <Route path="*" element={<LoginPage onLoginSuccess={handleLoginSuccess} />} /> {/* Default to LoginPage */}
-                <Route 
-                    path="/home" 
-                    element={user ? <HomePage user={user} roles={roles} /> : <LoginPage onLoginSuccess={handleLoginSuccess} />} 
+                <Route
+                    path="/home"
+                    element={user ? <HomePage user={user} roles={roles} /> : <LoginPage onLoginSuccess={handleLoginSuccess} />}
                 />
+
             </Routes>
         </Router>
     );

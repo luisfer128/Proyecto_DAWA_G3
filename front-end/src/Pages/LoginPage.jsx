@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Box, Button, TextField, Typography, CircularProgress, Grid, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import { Box, Button, TextField, Typography, CircularProgress, Grid } from '@mui/material';
+import ModalError from '../components/ModalError';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/LoginStyle.css';
@@ -7,10 +8,9 @@ import '../styles/LoginStyle.css';
 function LoginPage({ onLoginSuccess }) {
     const [login_user, setlogin_user] = useState('');
     const [login_password, setPassword] = useState('');
-    
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    
+    const [modalOpen, setModalOpen] = useState(false);
     const navigate = useNavigate();
 
     const handleLogin = async () => {
@@ -21,22 +21,29 @@ function LoginPage({ onLoginSuccess }) {
                 login_user,
                 login_password,
             });
-            // console.log('Login Response:', response.data); // Agrega esta línea para verificar la respuesta
+            //console.log('Login Response:', response.data); // Agrega esta línea para verificar la respuesta
 
             if (!response.data.result) {
                 throw new Error(response.data.message);
             }
-
+            
+            // Almacena el token en sessionStorage
+            sessionStorage.setItem('tokenapp', response.data.data.token);
+            
             onLoginSuccess(response.data.data);
             navigate('/home');
         } catch (error) {
             setError('Usuario o contraseña incorrectos');
+            setModalOpen(true);
             
         } finally {
             setLoading(false);
         }
     };
 
+    const handleCloseModal = () => {
+        setModalOpen(false);
+    }
     const handleRegister = () => {
         navigate('/registro');
     };
@@ -106,11 +113,6 @@ function LoginPage({ onLoginSuccess }) {
                             >
                                 ¿Olvidaste tu contraseña?
                             </Typography>
-                            {error && (
-                                <Typography color="error" sx={{ mt: 2, textAlign: 'center' }}>
-                                    {error}
-                                </Typography>
-                            )}
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
                                 <Button
                                     variant="contained"
@@ -138,6 +140,7 @@ function LoginPage({ onLoginSuccess }) {
                     </Box>
                 </Grid>
             </Grid>
+            <ModalError open={modalOpen} handleClose={handleCloseModal} errorMessage={error} />
         </Box>
     );
 }

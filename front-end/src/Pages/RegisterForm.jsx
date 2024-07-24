@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Box, Button, TextField, Typography, CircularProgress,
   Grid, Select, MenuItem, InputLabel, FormControl,} from "@mui/material";
+import ModalError from '../components/ModalError';
+
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/LoginStyle.css";
@@ -12,9 +14,40 @@ function RegisterForm() {
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
     const [gender, setGender] = useState('');
+    const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-
+    const [modalOpen, setModalOpen] = useState(false);
     const navigate = useNavigate();
+
+    const handleRegisterSubmit = async () => {
+        setLoading(true);
+        setError('');
+        try {
+            const response = await axios.post('http://26.127.175.34:5000/api/register', {
+                firstName,
+                lastName,
+                day,
+                month,
+                year,
+                gender,
+            });
+
+            if (!response.data.result) {
+                throw new Error(response.data.message);
+            }
+
+            navigate('/home');
+        } catch (error) {
+            setError('Error al registrar usuario');
+            setModalOpen(true);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleCloseModal = () => {
+        setModalOpen(false);
+    };
 
     const handleBackToLogin = () => {
         navigate('../');
@@ -199,8 +232,8 @@ function RegisterForm() {
                     <Button
                         variant="contained"
                         color="primary"
-                        // onClick={handleRegisterSubmit}
-                        // disabled={loading}
+                        onClick={handleRegisterSubmit}
+                        disabled={loading}
                         fullWidth
                         sx={{
                         mt: 2,
@@ -247,6 +280,7 @@ function RegisterForm() {
                 </Box>
             </Grid>
         </Grid>
+        {/* <ModalError open={modalOpen} onClose={handleCloseModal} errorMessage={error} /> */}
     </Box>
   );
 }
