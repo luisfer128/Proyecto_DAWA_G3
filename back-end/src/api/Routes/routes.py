@@ -4,6 +4,13 @@ from ..Services.add_friend_service import AddFriendService
 from ..Services.publicacion_service import GetFriendPublicationsService
 from ..Services.unfriends_service import UnfriendService
 from ..Services.register_service import RegisterService
+from ..Services.post_publi_service import PublicacionService
+from ..Services.like_service import LikeResource
+from ..Services.unlike_service import UnlikeResource
+from ..Services.comment_service import CommentResource
+from ..Services.amigo_sugerido_service import SuggestedFriendsResource
+from ..Services.amigos_usuario_service import FriendsResource
+
 
 def load_routes(api):
     # Metodo para el login
@@ -18,4 +25,15 @@ def load_routes(api):
     api.add_resource(UnfriendService, '/user/unfriend')
     # Metodo Registro
     api.add_resource(RegisterService, '/user/register')
-
+    # Método para crear publicación
+    api.add_resource(PublicacionService, '/user/create_publication')
+    # Método para agregar un like
+    api.add_resource(LikeResource, '/user/add_like')
+    # Método para remover un like
+    api.add_resource(UnlikeResource, '/user/remove_like')
+    # Método para agregar un comentario
+    api.add_resource(CommentResource, '/user/add_comment')
+    # Método para obtener amigos sugeridos
+    api.add_resource(SuggestedFriendsResource, '/user/suggested_friends')
+    # Método para obtener todos los amigos del usuario
+    api.add_resource(FriendsResource, '/user/get_friends')

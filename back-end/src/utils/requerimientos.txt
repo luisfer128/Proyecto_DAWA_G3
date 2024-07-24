@@ -11,4 +11,4 @@ psycopg2
 setuptools
 pyjwt
 pytz
-passlib
+py-bcrypt

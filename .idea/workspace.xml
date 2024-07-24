@@ -5,17 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f624418-0bd1-458f-a002-96eb9595a1ad" name="Changes" comment="Update README.md">
-      <change afterPath="$PROJECT_DIR$/back-end/src/api/Components/jwt_component.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back-end/src/api/Segu/segu_hash.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Components/amigo_sugerido_component.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Components/amigos_usuario_component.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Components/comment_component.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Components/like_component.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Components/post_publi_component.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Components/unlike_component.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Model/Request/publicacion_request.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Services/amigo_sugerido_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Services/amigos_usuario_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Services/comment_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Services/like_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Services/post_publi_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Services/unlike_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/api/Components/login_component.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Components/login_component.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/api/Components/register_component.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Components/register_component.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/api/Services/add_friend_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Services/add_friend_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/api/Services/publicacion_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Services/publicacion_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/api/Services/unfriends_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Services/unfriends_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/api/Services/user_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Services/user_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/ERR_22_07_2024.log" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/ERR_22_07_2024.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_22_07_2024.log" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_22_07_2024.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/api/Routes/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Routes/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/ERR_23_07_2024.log" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/ERR_23_07_2024.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_23_07_2024.log" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_23_07_2024.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end/src/utils/requerimientos.txt" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/requerimientos.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
