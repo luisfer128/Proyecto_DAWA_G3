@@ -1,21 +1,37 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography, CircularProgress, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import ModalAviso from '../components/ModalAviso';
 import '../styles/RecuperarPass.css';
 
 function RecuperarPass() {
     const navigate = useNavigate();
-    const [username, setUsername] = useState('');
+    const [usernameOrEmail, setUsernameOrEmail] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
 
-    const handleLogin = async () => {
+    const handleRecover = () => {
+        if (!usernameOrEmail) {
+            setError('Por favor, ingresa tu correo electrónico o username.');
+            setModalOpen(true);
+            return;
+        }
+
         setLoading(true);
         setError('');
+        setTimeout(() => {
+            setLoading(false);
+            setModalOpen(true);
+        }, 1500);
     };
 
     const handleBackLogin = () => {
         navigate('/login');
+    };
+
+    const handleCloseModal = () => {
+        setModalOpen(false);
     };
 
     return (
@@ -40,14 +56,13 @@ function RecuperarPass() {
                     Recuperar Contraseña
                 </Typography>
                 <Typography component="body2" color="white">
-                    Ingresa tu correo electrónico
+                    Ingresa tu correo electrónico o tu username
                 </Typography>
                 <Box sx={{ width: '100%', maxWidth: 400 }}>
                     <TextField
-                        label="Correo Electrónico"
-                        //buscar por correo y enviar este luego
-                        // value={username}
-                        // onChange={(e) => setUsername(e.target.value)}
+                        label="Correo Electrónico o Username"
+                        value={usernameOrEmail}
+                        onChange={(e) => setUsernameOrEmail(e.target.value)}
                         fullWidth
                         margin="normal"
                         InputLabelProps={{ style: { color: 'white' } }}
@@ -68,15 +83,10 @@ function RecuperarPass() {
                             },
                         }}
                     />
-                    {error && (
-                        <Typography color="error" sx={{ mt: 2 }}>
-                            {error}
-                        </Typography>
-                    )}
                     <Button
                         variant="contained"
                         color="primary"
-                        onClick={handleLogin}
+                        onClick={handleRecover}
                         disabled={loading}
                         fullWidth
                         sx={{ mt: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
@@ -108,6 +118,7 @@ function RecuperarPass() {
                     </Box>
                 </Box>
             </Grid>
+            <ModalAviso open={modalOpen} handleClose={handleCloseModal} errorMessage={error || "Si tus datos son correctos, alguien de soporte se contactará contigo para verificar tus datos."} />
         </Box>
     );
 }
