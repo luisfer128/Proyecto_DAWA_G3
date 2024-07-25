@@ -1,9 +1,8 @@
 import React from 'react';
 import { Modal, Box, Typography, IconButton, Button } from '@mui/material';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber'; // Importar el icono de advertencia
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-
-function ModalSuccess({ open, handleClose, errorMessage }) {
+const ModalSuccess = ({ open, handleClose, successMessage }) => {
     return (
         <Modal
             open={open}
@@ -16,7 +15,7 @@ function ModalSuccess({ open, handleClose, errorMessage }) {
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
-                width: 400,
+                width: 320,
                 bgcolor: 'background.paper',
                 border: '2px solid #000',
                 boxShadow: 24,
@@ -26,17 +25,19 @@ function ModalSuccess({ open, handleClose, errorMessage }) {
                 alignItems: 'center',
                 borderRadius:'10px'
             }}>
-                <IconButton color="warning">
-                    <WarningAmberIcon sx={{ fontSize: 40 }} />
+                <IconButton>
+                    <CheckCircleIcon sx={{ fontSize: 40, color: 'success.main' }} />
                     <Typography id="error-modal-title" variant="h5" component="h3">
-                        Exitoso
+                    Publicación Exitosa
                     </Typography>
                 </IconButton>
                 
-                <Typography id="error-modal-description" sx={{ mt: 2 }}>
-                    {errorMessage}
+                <Typography sx={{ mt: 2 }}>
+                    {successMessage}
                 </Typography>
-                <Button onClick={handleClose} sx={{ mt: 2 }}>Cerrar</Button>
+                <Button onClick={handleClose} sx={{ mt: 2 }} variant="outlined" color="primary">
+                    Cerrar
+                </Button>
             </Box>
         </Modal>
     );
