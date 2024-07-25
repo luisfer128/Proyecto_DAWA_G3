@@ -105,7 +105,7 @@ export default function PrimarySearchAppBar() {
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem('tokenapp'); // Elimina el token
+    sessionStorage.removeItem('token'); // Elimina el token
     navigate('/'); // Redirige a la página de login
   };
 
