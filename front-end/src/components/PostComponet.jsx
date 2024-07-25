@@ -1,21 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Grid, Typography, Paper, CircularProgress } from '@mui/material';
+import { Container, Grid, Typography, Paper, CircularProgress, Box, Avatar, Divider } from '@mui/material';
+import LikePost from './LikePost';
 import axios from 'axios';
 
-const Post = ({ title, content, comments }) => (
-    <Paper elevation={3} sx={{ padding: '16px', marginBottom: '16px' }}>
-        <Typography variant="h6">{title}</Typography>
-        <Typography variant="body1">{content || "No hay texto en la publicación"}</Typography>
-        {comments && comments.length > 0 && (
-            <div style={{ marginTop: '16px' }}>
-                <Typography variant="subtitle1">Comentarios:</Typography>
-                {comments.map((comment, index) => (
-                    <Typography key={index} variant="body2" sx={{ marginTop: '8px' }}>
-                        {comment.comentario_user_name}: {comment.comentario}
-                    </Typography>
-                ))}
-            </div>
-        )}
+const Post = ({ userName, content, comments, avatarUrl }) => (
+    <Paper elevation={3} sx={{ padding: '16px', marginBottom: '16px', borderRadius: '10px' }}>
+        <Box display="flex" alignItems="center" marginBottom="8px">
+            <Avatar src={avatarUrl} alt={userName} sx={{ marginRight: '8px' }} />
+            <Typography variant="h6">{userName}</Typography>
+        </Box>
+        
+        <Typography variant="body1" sx={{ marginBottom: '16px' }}>{content || "No hay texto en la publicación"}</Typography>
+        
+        <LikePost/>
+        
+        <Box sx={{ marginTop: '16px', borderTop: '1px solid #ddd', paddingTop: '8px' }}>
+            <Typography variant="body1">Comentarios:</Typography>
+            {comments && comments.length > 0 ? (
+                comments.map((comment, index) => (
+                    <Box key={index} display="flex" alignItems="center" marginTop="8px">
+                        <Avatar sx={{ width: 24, height: 24, marginRight: '8px' }} />
+                        <Typography variant="body2">
+                            <strong>{comment.comentario_user_name}:</strong> {comment.comentario}
+                        </Typography>
+                    </Box>
+                ))
+            ) : (
+                <Typography variant="body2" sx={{ marginTop: '8px', fontStyle: 'italic' }}>
+                    Aún no se han hecho comentarios, sé el primero.
+                </Typography>
+            )}
+        </Box>
     </Paper>
 );
 
@@ -65,6 +80,7 @@ function PostComponent({ user_id }) {
 
     if (error) {
         return <Typography variant="body1" color="error">{error}</Typography>;
+        
     }
 
     return (
@@ -76,9 +92,10 @@ function PostComponent({ user_id }) {
                         posts.map((post, index) => (
                             <Post
                                 key={index}
-                                title={`Post by ${post.publicacion_user_name}`}
+                                userName={post.publicacion_user_name}
                                 content={post.texto}
                                 comments={post.comentarios}
+                                avatarUrl={post.avatarUrl} // Assuming you have avatarUrl field
                             />
                         ))
                     ) : (
@@ -90,6 +107,7 @@ function PostComponent({ user_id }) {
             </Grid>
         </Container>
     );
+
 }
 
 export default PostComponent;

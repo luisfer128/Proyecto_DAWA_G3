@@ -10,7 +10,7 @@ const HomePage = ({user, roles}) => {
         <div>
             <Navbar />
             <Grid  sx={{ marginTop: '28px' }}>
-                <CrearPost />
+                <CrearPost user_id={user.user_id}/>
                 {/* <h1>Bienvenido, {user.nombres}</h1> */}
                 <PostComponet user_id={user.user_id} />
             </Grid>
