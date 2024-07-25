@@ -5,7 +5,7 @@ import LoginPage from './Pages/LoginPage';
 import RecuperarPass from './Pages/RecuperarPass';
 import HomePage from './Pages/HomePage';
 import Register from './Pages/RegisterForm';
-import Perfil from './components/Perfil';
+import Perfil from './Pages/Perfil';
 
 function App() {
     const [user, setUser] = useState(null);
@@ -36,7 +36,7 @@ function App() {
             <Routes>
                 <Route path="/recuperar-pass" element={<RecuperarPass />} />
                 <Route path="/registro" element={<Register />} />
-                <Route path="/perfil" element={<Perfil />} />
+                <Route path="/perfil" element={user ? <Perfil user={user} /> : <LoginPage onLoginSuccess={handleLoginSuccess} />} />
                 <Route path="*" element={<LoginPage onLoginSuccess={handleLoginSuccess} />} /> {/* Default to LoginPage */}
                 <Route 
                     path="/home" 
@@ -48,4 +48,3 @@ function App() {
 }
 
 export default App;
-
