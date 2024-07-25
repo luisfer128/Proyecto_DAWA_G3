@@ -8,10 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/ERR_25_07_2024.log" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/ERR_25_07_2024.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_25_07_2024.log" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_25_07_2024.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/Pages/HomePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/Pages/HomePage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/Pages/Perfil.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/Pages/Perfil.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/PostComponet.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/PostComponet.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/PublicacionUsuario.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/PublicacionUsuario.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/components/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/Navbar.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

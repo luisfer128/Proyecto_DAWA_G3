@@ -18,6 +18,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import logo from "../assets/login/logo.svg";
 import '../styles/navbar.css';
+import { Button } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -127,7 +128,6 @@ export default function PrimarySearchAppBar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleProfileClick}>Perfil</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Configuracion</MenuItem>
       <MenuItem onClick={handleLogout}>Cerrar Sesion</MenuItem>
     </Menu>
   );
@@ -148,42 +148,8 @@ export default function PrimarySearchAppBar() {
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 4 new mails"
-          color="inherit"
-          sx={{
-            '&:hover': {
-              backgroundColor: '#00539f',
-            },
-          }}
-        >
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-          sx={{
-            '&:hover': {
-              backgroundColor: '#00539f',
-            },
-          }}
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+    >     
+      <MenuItem onClick={handleProfileClick}>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -198,7 +164,12 @@ export default function PrimarySearchAppBar() {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>Perfil</p>    
+      </MenuItem>
+      <MenuItem onClick={handleLogout}>
+        <Typography>
+          Cerrar Sesion
+        </Typography>
       </MenuItem>
     </Menu>
   );
@@ -266,35 +237,7 @@ export default function PrimarySearchAppBar() {
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-              sx={{
-                '&:hover': {
-                  backgroundColor: '#00539f',
-                },
-              }}
-            >
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-              sx={{
-                '&:hover': {
-                  backgroundColor: '#00539f',
-                },
-              }}
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>          
             <IconButton
               size="large"
               edge="end"
