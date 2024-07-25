@@ -3,10 +3,10 @@ import { Container, Grid, Typography, Paper, Box, Avatar } from '@mui/material';
 import LikePost from './LikePost';
 import AddComentario from './AddComentario';
 
-const Post = ({ publicationId, userId, userName, content, comments, avatarUrl, onCommentAdded }) => {
+const Post = ({ publicationId, userId, userName, content, comments, avatarUrl, onCommentAdded, currentUserName }) => {
     const handleCommentAdded = (newComment) => {
         const updatedPost = {
-            id: publicationId,
+            Id_publicacion: publicationId,
             user_id: userId,
             publicacion_user_name: userName,
             texto: content,
@@ -14,7 +14,6 @@ const Post = ({ publicationId, userId, userName, content, comments, avatarUrl, o
         };
         onCommentAdded(updatedPost);
     };
-    //console.log("Publicacion", publicationId);
 
     return (
         <Paper elevation={3} sx={{ padding: '16px', marginBottom: '16px', borderRadius: '10px' }}>
@@ -46,14 +45,15 @@ const Post = ({ publicationId, userId, userName, content, comments, avatarUrl, o
             </Box>
             <AddComentario 
                 publicationId={publicationId} 
-                userId={userId} 
-                onCommentAdded={handleCommentAdded} // Pasar la función para actualizar los comentarios
+                userId={userId}
+                userName={currentUserName} 
+                onCommentAdded={handleCommentAdded}
             />
         </Paper>
     );
 };
 
-function PostComponent({ posts, user_id, onCommentAdded }) {
+function PostComponent({ posts, user_id, user_name, onCommentAdded }) {
     if (!posts) return <Typography variant="body1">No se encontraron publicaciones.</Typography>;
 
     if (posts.length === 0) {
@@ -77,6 +77,7 @@ function PostComponent({ posts, user_id, onCommentAdded }) {
                             comments={post.comentarios}
                             // Agregar un avatar con avatar.io luego
                             //avatarUrl={post.avatarUrl} 
+                            currentUserName={user_name} // Pasar el nombre del usuario actual a cada Post
                             onCommentAdded={onCommentAdded}
                         />
                     ))}

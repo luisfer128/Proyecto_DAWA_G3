@@ -14,7 +14,6 @@ const HomePage = ({ user }) => {
             if (!token) {
                 throw new Error('No token found');
             }
-            //console.log("User ID:", user); // Log para verificar el ID de usuario
             const response = await axios.post('http://26.127.175.34:5000/api/publications', {
                 user_id: user.user_id,
             }, {
@@ -22,7 +21,6 @@ const HomePage = ({ user }) => {
                     'tokenapp': token
                 }
             });
-            //console.log('Publicaciones Response:', response.data); // Log para verificar la respuesta
             if (response.data.result) {
                 setPosts(response.data.data);
             } else {
@@ -44,16 +42,22 @@ const HomePage = ({ user }) => {
     const handleCommentAdded = (updatedPost) => {
         setPosts(prevPosts => 
             prevPosts.map(post => 
-                post.id === updatedPost.id ? updatedPost : post
+                post.Id_publicacion === updatedPost.Id_publicacion ? updatedPost : post
             )
         );
     };
+
     return (
         <div>
             <Navbar />
             <Grid sx={{ marginTop: '28px' }}>
                 <CrearPost user_id={user.user_id} onPostCreated={handlePostCreated} />
-                <PostComponet posts={posts} user_id={user.user_id} idPublicacion={posts.Id_publicacion} onCommentAdded={handleCommentAdded} />
+                <PostComponet 
+                    posts={posts} 
+                    user_id={user.user_id} 
+                    user_name={user.user_name} 
+                    onCommentAdded={handleCommentAdded} 
+                />
             </Grid>
         </div>
     );

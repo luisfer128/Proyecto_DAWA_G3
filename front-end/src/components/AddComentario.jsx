@@ -3,7 +3,7 @@ import { Box, Typography, TextField, Button, CircularProgress } from '@mui/mater
 import axios from 'axios';
 import SendIcon from '@mui/icons-material/Send';
 
-function AddComentario({ publicationId, userId, onCommentAdded }) {
+function AddComentario({ publicationId, userId, userName, onCommentAdded }) { // Añadir userName
     const [commentText, setCommentText] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -24,9 +24,6 @@ function AddComentario({ publicationId, userId, onCommentAdded }) {
             if (!token) {
                 throw new Error('No token found');
             }
-            console.log("User ID:", userId); // Log para verificar el ID de usuario
-            console.log("Text Comment:", commentText); // Log para verificar el ID de usuario
-            console.log("ID de publicacion:", publicationId); // Log para verificar el ID de usuario
             const response = await axios.post('http://26.127.175.34:5000/user/add_comment', {
                 publication_id: publicationId,
                 user_id: userId,
@@ -39,7 +36,7 @@ function AddComentario({ publicationId, userId, onCommentAdded }) {
 
             if (response.data.result) {
                 const newComment = {
-                    comentario_user_name: response.data.user_name,
+                    comentario_user_name: userName, // Usar el nombre de usuario recibido en las props
                     comentario: commentText
                 };
                 setCommentText('');
