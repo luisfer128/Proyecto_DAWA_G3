@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Grid } from '@mui/material';
-import PostComponet from '../components/PostComponet';
+import { Box, Container } from '@mui/material';
+import PostComponent from '../components/PostComponent';
 import Navbar from '../components/Navbar';
 import CrearPost from '../components/CrearPost';
 import axios from 'axios';
@@ -50,15 +50,19 @@ const HomePage = ({ user }) => {
     return (
         <div>
             <Navbar />
-            <Grid sx={{ marginTop: '28px' }}>
-                <CrearPost user_id={user.user_id} onPostCreated={handlePostCreated} />
-                <PostComponet 
-                    posts={posts} 
-                    user_id={user.user_id} 
-                    user_name={user.user_name} 
-                    onCommentAdded={handleCommentAdded} 
-                />
-            </Grid>
+            <Container maxWidth="md" sx={{ mt: 5, backgroundColor: '#F5F5F5', borderRadius: "10px", p: 3 }}>
+                <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <CrearPost user_id={user.user_id} onPostCreated={handlePostCreated} />
+                    <Box sx={{ width: '100%', mt: 3 }}>
+                        <PostComponent 
+                            posts={posts} 
+                            user_id={user.user_id} 
+                            user_name={user.user_name} 
+                            onCommentAdded={handleCommentAdded} 
+                        />
+                    </Box>
+                </Box>
+            </Container>
         </div>
     );
 };

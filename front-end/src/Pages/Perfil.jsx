@@ -3,7 +3,6 @@ import { Box, Container, Avatar, Typography, Tabs, Tab, List, ListItem, ListItem
 import PrimarySearchAppBar from '../components/Navbar'; // Asegúrate de ajustar la ruta de importación según corresponda
 import VerAmigos from '../components/VerAmigos';
 import EliminarFollow from '../components/EliminarFollow';
-import CrearPost from '../components/CrearPost';
 import PublicacionUsuario from '../components/PublicacionUsuario';
 
 const Perfil = ({ user }) => {
@@ -22,7 +21,6 @@ const Perfil = ({ user }) => {
       case 0:
         return (
           <Box sx={{ width: '100%' }}>
-            <CrearPost user_id={user.user_id} onPostCreated={() => {}} />
             <PublicacionUsuario user={user} />
           </Box>
         );

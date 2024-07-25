@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Grid } from '@mui/material';
 import PostUserComponent from './PostUserComponent';
+import CrearPost from '../components/CrearPost';
 import axios from 'axios';
 
 const PublicacionUsuario = ({ user }) => {
@@ -48,6 +49,7 @@ const PublicacionUsuario = ({ user }) => {
     return (
         <div>
             <Grid sx={{ marginTop: '28px' }}>
+                <CrearPost user_id={user.user_id} onPostCreated={handlePostCreated} />
                 <PostUserComponent 
                     posts={posts} 
                     user_id={user.user_id} 

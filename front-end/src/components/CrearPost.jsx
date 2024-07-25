@@ -62,9 +62,10 @@ function CrearPost({ user_id, onPostCreated }) {
                 display: 'flex',
                 justifyContent: 'center',
                 mt: 4,
+                borderRadius: "10px"
             }}
         >
-            <Paper sx={{ padding: '16px', width: '100%' }}>
+            <Paper sx={{ padding: '16px', width: '100%', borderRadius: "10px" }}>
                 <Typography variant="h6">¿En qué estás pensando?</Typography>
                 <TextField
                     fullWidth
