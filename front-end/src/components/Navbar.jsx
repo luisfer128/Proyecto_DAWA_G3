@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -7,18 +7,18 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import logo from "../assets/login/logo.svg";
 import '../styles/navbar.css';
-import { Button } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -60,16 +60,30 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const [friendsAnchorEl, setFriendsAnchorEl] = React.useState(null);
-
+export default function PrimarySearchAppBar(user) {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [modules, setModules] = useState([]);
+  const [openMenus, setOpenMenus] = useState([]);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false); // Estado para la barra lateral
+  const [hoveredMenuIndex, setHoveredMenuIndex] = useState(null); // Estado para el índice del menú actualmente seleccionado
   const navigate = useNavigate(); // Inicializa useNavigate
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const isFriendsMenuOpen = Boolean(friendsAnchorEl);
+
+  useEffect(() => {
+    const userData = sessionStorage.getItem('user');
+    if (userData) {
+        const parsedData = JSON.parse(userData);
+        //console.log("test:",parsedData.roles)
+        setModules(parsedData.roles[0].modules);
+        setOpenMenus(parsedData.roles[0].modules.map(() => false));
+    } else {
+        navigate('/');
+    }
+  }, [navigate]);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -79,21 +93,29 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(null);
   };
 
+  const handleMenuClick = (index) => {
+    setOpenMenus(prevState => {
+        const newState = [...prevState];
+        newState[index] = !newState[index];
+        return newState;
+    });
+  };
+
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
 
+  const handleToggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const handleDrawerToggle = () => {
+    setDrawerOpen(!drawerOpen); // Alterna el estado del drawer
+  };
+
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
-  };
-
-  const handleFriendsMenuOpen = (event) => {
-    setFriendsAnchorEl(event.currentTarget);
-  };
-
-  const handleFriendsMenuClose = () => {
-    setFriendsAnchorEl(null);
   };
 
   const handleProfileClick = () => {
@@ -108,6 +130,24 @@ export default function PrimarySearchAppBar() {
   const handleLogout = () => {
     sessionStorage.removeItem('token'); // Elimina el token
     navigate('/'); // Redirige a la página de login
+  };
+
+  const handleMenuEnter = (index) => {
+    setHoveredMenuIndex(index);
+    setOpenMenus(prevState => {
+      const newState = [...prevState];
+      newState[index] = true;
+      return newState;
+    });
+  };
+
+  const handleMenuLeave = (index) => {
+    setHoveredMenuIndex(null);
+    setOpenMenus(prevState => {
+      const newState = [...prevState];
+      newState[index] = false;
+      return newState;
+    });
   };
 
   const menuId = 'primary-search-account-menu';
@@ -174,26 +214,34 @@ export default function PrimarySearchAppBar() {
     </Menu>
   );
 
-  const renderFriendsMenu = (
-    <Menu
-      anchorEl={friendsAnchorEl}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
-      }}
-      id="friends-menu"
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'left',
-      }}
-      open={isFriendsMenuOpen}
-      onClose={handleFriendsMenuClose}
+  const drawerList = (
+    <Box
+      sx={{ width: 250 }}
+      role="presentation"
+      onMouseLeave={() => handleMenuLeave(hoveredMenuIndex)}
+      onClick={handleDrawerToggle}
+      onKeyDown={handleDrawerToggle}
     >
-      <MenuItem onClick={handleFriendsMenuClose}>Amigos</MenuItem>
-      <MenuItem onClick={handleFriendsMenuClose}>Amigo</MenuItem>
-      <MenuItem onClick={handleFriendsMenuClose}>Amigo</MenuItem>
-    </Menu>
+      <List>
+        {modules.map((module, index) => (
+          <React.Fragment key={module.mod_id}>
+            <ListItem 
+              button 
+              onMouseEnter={() => handleMenuEnter(index)}
+            >
+              <ListItemText primary={module.nombre} />
+            </ListItem>
+            {openMenus[index] && module.menu.map(menuItem => (
+              <List component="div" disablePadding key={menuItem.menu_id}>
+                <ListItem button sx={{ pl: 4 }} onClick={() => navigate(menuItem.route)}> {/* Asegúrate de tener la ruta correcta */}
+                  <ListItemText primary={menuItem.nombre} />
+                </ListItem>
+              </List>
+            ))}
+          </React.Fragment>
+        ))}
+      </List>
+    </Box>
   );
 
   return (
@@ -205,16 +253,23 @@ export default function PrimarySearchAppBar() {
             edge="start"
             color="inherit"
             aria-label="open drawer"
+            onClick={handleDrawerToggle}
             sx={{ 
               mr: 2,
               '&:hover': {
                 backgroundColor: '#00539f',
               },
             }}
-            onClick={handleFriendsMenuOpen} // Open friends menu on click
           >
-            <MenuIcon />
+          <MenuIcon />
           </IconButton>
+          <Drawer
+            anchor="left"
+            open={drawerOpen}
+            onClose={handleDrawerToggle}
+          >
+            {drawerList}
+          </Drawer>
           <Box className="volver_home" sx={{ display: 'flex', justifyContent: 'space-between', cursor: 'pointer' }} onClick={handleHomeClick}>
             <img className="logo" src={logo} alt="logo" />
             <Typography
@@ -271,7 +326,6 @@ export default function PrimarySearchAppBar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      {renderFriendsMenu}
     </Box>
   );
 }

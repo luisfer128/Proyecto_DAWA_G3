@@ -49,7 +49,7 @@ const HomePage = ({ user }) => {
 
     return (
         <div>
-            <Navbar />
+            <Navbar user={user.roles}/>
             <Container maxWidth="md" sx={{ mt: 5, backgroundColor: '#F5F5F5', borderRadius: "10px", p: 3 }}>
                 <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <CrearPost user_id={user.user_id} onPostCreated={handlePostCreated} />
