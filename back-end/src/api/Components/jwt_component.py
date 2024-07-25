@@ -13,7 +13,7 @@ class JwtComponent:
             timezone = pytz.timezone('America/GUayaquil')
             payload = {
                 'iat': datetime.now(tz=timezone),
-                'exp': datetime.now(tz=timezone) + timedelta(minutes=15),
+                'exp': datetime.now(tz=timezone) + timedelta(minutes=60),
                 'username': p_user
             }
             respuesta = jwt.encode(payload, Parametros.secret_jwt, 'HS256')

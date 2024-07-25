@@ -11,6 +11,7 @@ from ..Services.comment_service import CommentResource
 from ..Services.amigo_sugerido_service import SuggestedFriendsResource
 from ..Services.amigos_usuario_service import FriendsResource
 from ..Services.carreras_get_service import CareersResource
+from ..Services.publicacion_usuario_service import GetUserPublicationsService
 
 
 def load_routes(api):
@@ -40,3 +41,5 @@ def load_routes(api):
     api.add_resource(FriendsResource, '/user/get_friends')
     # Método para obtener todas las carreras
     api.add_resource(CareersResource, '/api/carreras')
+    # Método para obtener publicaciones del usuario
+    api.add_resource(GetUserPublicationsService, '/user/publications')
