@@ -1,136 +1,65 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Container, Avatar, Typography, Tabs, Tab, Grid, Paper, List, ListItem, ListItemText, Button, IconButton, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import CommentIcon from '@mui/icons-material/Comment';
-import PrimarySearchAppBar from '../components/Navbar';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { Box, Container, Avatar, Typography, Tabs, Tab, List, ListItem, ListItemText, Button, IconButton, TextField } from '@mui/material';
+import PrimarySearchAppBar from '../components/Navbar'; // Asegúrate de ajustar la ruta de importación según corresponda
+import VerAmigos from '../components/VerAmigos';
+import EliminarFollow from '../components/EliminarFollow';
+import CrearPost from '../components/CrearPost';
+import PublicacionUsuario from '../components/PublicacionUsuario';
 
 const Perfil = ({ user }) => {
   const [selectedTab, setSelectedTab] = useState(0);
-  const [newPostText, setNewPostText] = useState('');
-  const [friends, setFriends] = useState([]);
-  const [selectedFriend, setSelectedFriend] = useState(null);
-  const [openDialog, setOpenDialog] = useState(false);
-
-  useEffect(() => {
-    if (user) {
-      fetchFriends();
-    }
-  }, [user]);
-
-  const fetchFriends = async () => {
-    try {
-      const response = await axios.get(`/user/get_friends`, { params: { user_id: user.user_id } });
-      if (response.data.result) {
-        setFriends(response.data.data);
-      } else {
-        console.error(response.data.message);
-      }
-    } catch (error) {
-      console.error('Error fetching friends:', error);
-    }
-  };
-
-  const handleDeleteFriend = async () => {
-    try {
-      const response = await axios.post(`/user/unfriend`, { Id_user: user.user_id, Id_amigo: selectedFriend });
-      if (response.data.result) {
-        setFriends(friends.filter(friend => friend.Id_user !== selectedFriend));
-        setOpenDialog(false);
-      } else {
-        console.error(response.data.message);
-      }
-    } catch (error) {
-      console.error('Error deleting friend:', error);
-    }
-  };
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
 
-  const handleNewPostTextChange = (event) => {
-    setNewPostText(event.target.value);
-  };
-
-  const handleNewPost = () => {
-    // Lógica para manejar la nueva publicación
-    console.log('Nuevo estado:', newPostText);
-    setNewPostText('');
+  const handleUnfollow = (friendId) => {
+    console.log('Amigo eliminado:', friendId);
   };
 
   const renderTabContent = () => {
     switch (selectedTab) {
       case 0:
         return (
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Paper sx={{ p: 2 }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', m: 1 }}>
-                  <Typography variant="body1" sx={{ alignContent: 'center' }}>16 de julio a las 6:29 p.m. - Esta es una publicación de ejemplo.</Typography>
-                  <Box>
-                    <IconButton color="primary">
-                      <FavoriteIcon />
-                    </IconButton>
-                    <IconButton color="primary">
-                      <CommentIcon />
-                    </IconButton>
-                  </Box>
-                </Box>
-                <Box sx={{ mt: 2 }}>
-                  <TextField
-                    fullWidth
-                    variant="outlined"
-                    placeholder="Escribe un comentario..."
-                    multiline
-                    rows={2}
-                  />
-                  <Button variant="contained" color="primary" sx={{ m: 1 }}>Comentar</Button>
-                  <Button variant="outlined" color="error" sx={{ m: 1 }}>Borrar Publicación</Button>
-                </Box>
-              </Paper>
-            </Grid>
-            {/* Añade más publicaciones aquí */}
-          </Grid>
+          <Box sx={{ width: '100%' }}>
+            <CrearPost user_id={user.user_id} onPostCreated={() => {}} />
+            <PublicacionUsuario user={user} />
+          </Box>
         );
       case 1:
         return (
           <Box>
             <List>
               <ListItem>
-                <ListItemText primary="Usuario" secondary={user.usuario} />
+                <ListItemText primary={<strong>Usuario:</strong>} secondary={user.usuario} />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Nombres" secondary={user.nombres} />
+                <ListItemText primary={<strong>Nombres:</strong>} secondary={user.nombres} />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Correo Institucional" secondary={user.mail} />
+                <ListItemText primary={<strong>Correo Institucional:</strong>} secondary={user.mail} />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Carrera" secondary={user.carrera} />
+                <ListItemText primary={<strong>Carrera:</strong>} secondary={user.carrera} />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Facultad" secondary={user.facultad} />
+                <ListItemText primary={<strong>Facultad:</strong>} secondary={user.facultad} />
               </ListItem>
             </List>
           </Box>
         );
       case 2:
         return (
-          <Box>
-            <Grid container spacing={2}>
-              {friends.map(friend => (
-                <Grid item xs={12} sm={6} key={friend.Id_user}>
-                  <Paper sx={{ p: 2 }}>
-                    <Typography variant="body1">{friend.nombres}</Typography>
-                    <Button variant="outlined" color="error" sx={{ mt: 2 }} onClick={() => { setSelectedFriend(friend.Id_user); setOpenDialog(true); }}>
-                      Eliminar Amigo
-                    </Button>
-                  </Paper>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
+          <VerAmigos 
+            user={user} 
+            renderFriendActions={(friend) => (
+              <EliminarFollow 
+                userId={user.user_id} 
+                friendId={friend.Id_user} 
+                onUnfollow={handleUnfollow} 
+              />
+            )}
+          />
         );
       default:
         return null;
@@ -158,44 +87,10 @@ const Perfil = ({ user }) => {
           </Tabs>
         </Box>
 
-        {selectedTab === 0 && (
-          <Box sx={{ mt: 4 }}>
-            <Paper sx={{ p: 2 }}>
-              <Typography variant="h6">¿En qué estás pensando?</Typography>
-              <TextField
-                fullWidth
-                variant="outlined"
-                placeholder="Escribe algo..."
-                multiline
-                rows={2}
-                value={newPostText}
-                onChange={handleNewPostTextChange}
-                sx={{ mt: 2 }}
-              />
-              <Button variant="contained" color="primary" sx={{ m: 1 }} onClick={handleNewPost}>Publicar</Button>
-            </Paper>
-          </Box>
-        )}
-
         <Box sx={{ mt: 4 }}>
           {renderTabContent()}
         </Box>
       </Container>
-
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>Eliminar Amigo</DialogTitle>
-        <DialogContent>
-          <Typography>¿Estás seguro de que deseas eliminar a este amigo?</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)} color="primary">
-            Cancelar
-          </Button>
-          <Button onClick={handleDeleteFriend} color="error">
-            Eliminar
-          </Button>
-        </DialogActions>
-      </Dialog>
     </>
   );
 };

@@ -58,12 +58,13 @@ function CrearPost({ user_id, onPostCreated }) {
     return (
         <Box
             sx={{
+                width: '100%',
                 display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
+                justifyContent: 'center',
+                mt: 4,
             }}
         >
-            <Paper sx={{ padding: '16px', p: 2, maxWidth: '580px', width: '100%' }}>
+            <Paper sx={{ padding: '16px', width: '100%' }}>
                 <Typography variant="h6">¿En qué estás pensando?</Typography>
                 <TextField
                     fullWidth
