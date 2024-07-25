@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Box, Paper, Typography, TextField, Button, CircularProgress } from "@mui/material";
+import ModalSuccess from "./ModalSuccess";
 import axios from "axios";
 
-function CrearPost({ user_id }) {
+function CrearPost({ user_id, onPostCreated }) {
     const [newPostText, setNewPostText] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const [modalOpen, setModalOpen] = useState(false);
 
     const handleNewPostTextChange = (e) => {
         setNewPostText(e.target.value);
@@ -22,10 +24,6 @@ function CrearPost({ user_id }) {
                 throw new Error('No token found');
             }
             //console.log("User ID:", user_id); // Log para verificar el ID de usuario
-            // console.log('Datos enviados:', {
-            //     user_id,
-            //     text: newPostText,
-            // });
 
             const response = await axios.post('http://26.127.175.34:5000/user/create_publication', {
                 user_id,
@@ -36,21 +34,25 @@ function CrearPost({ user_id }) {
                     'tokenapp': token
                 }
             });
-
-            console.log('Respuesta del servidor:', response.data);
-
+            //console.log('Publicaciones Response:', response.data); // Log para verificar la respuesta
             if (response.data.result) {
                 setSuccessMessage(response.data.message);
                 setNewPostText('');
+                setModalOpen(true);
+                onPostCreated(); 
             } else {
                 setError(response.data.message || 'Error al crear la publicación');
             }
+            
         } catch (err) {
-            console.error('Error al enviar la solicitud:', err);
             setError(err.message || 'Error al crear la publicación');
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleCloseModal = () => {
+        setModalOpen(false);
     };
 
     return (
@@ -89,10 +91,12 @@ function CrearPost({ user_id }) {
                 {error && (
                     <Typography color="error" sx={{ mt: 2 }}>{error}</Typography>
                 )}
-                {successMessage && (
-                    <Typography color="primary" sx={{ mt: 2 }}>{successMessage}</Typography>
-                )}
             </Paper>
+            <ModalSuccess 
+                open={modalOpen} 
+                handleClose={handleCloseModal} 
+                successMessage={successMessage} 
+            />
         </Box>
     );
 }
