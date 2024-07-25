@@ -19,17 +19,37 @@ class LikeComponent:
                 message = "Publicación no encontrada"
                 return internal_response(result, None, message)
 
-            # Incrementar el contador de likes
-            sql_update_likes = ("UPDATE \"publicacion\" SET \"likes\" = \"likes\" + 1 WHERE \"Id_publicacion\" = %s RETURNING \"likes\"")
-            update_record = (publication_id,)
-            resul_update = DataBaseHandle.ExecuteNonQuery(sql_update_likes, update_record, fetch_id=True)
+            # Verificar si el usuario ya ha dado like a la publicación
+            sql_check_like = ("SELECT count(*) as count FROM \"likes\" WHERE \"Id_publicacion\" = %s AND \"Id_user\" = %s")
+            check_like_record = (publication_id, user_id)
+            resul_check_like = DataBaseHandle.getRecords(sql_check_like, 1, check_like_record)
 
-            if not resul_update['result']:
-                message = resul_update['message']
+            if resul_check_like['result'] and resul_check_like['data']['count'] > 0:
+                message = "El usuario ya ha dado like a esta publicación"
                 return internal_response(result, None, message)
 
+            # Insertar el like en la tabla de likes
+            sql_insert_like = ("INSERT INTO \"likes\" (\"Id_publicacion\", \"Id_user\") VALUES (%s, %s) RETURNING \"Id_likes\"")
+            insert_like_record = (publication_id, user_id)
+            resul_insert_like = DataBaseHandle.ExecuteNonQuery(sql_insert_like, insert_like_record, fetch_id=True)
+
+            if not resul_insert_like['result']:
+                message = resul_insert_like['message']
+                return internal_response(result, None, message)
+
+            # Obtener el total de likes después de insertar
+            sql_get_total_likes = ("SELECT count(*) as total_likes FROM \"likes\" WHERE \"Id_publicacion\" = %s")
+            get_total_likes_record = (publication_id,)
+            resul_total_likes = DataBaseHandle.getRecords(sql_get_total_likes, 1, get_total_likes_record)
+
+            if not resul_total_likes['result']:
+                message = resul_total_likes['message']
+                return internal_response(result, None, message)
+
+            total_likes = resul_total_likes['data']['total_likes']
+
             result = True
-            message = f"Like añadido. Total de likes: {resul_update['data']}"
+            message = f"Like añadido. Total de likes: {total_likes}"
 
         except Exception as err:
             HandleLogs.write_error(err)

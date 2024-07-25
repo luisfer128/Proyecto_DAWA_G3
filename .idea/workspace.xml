@@ -4,14 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0f624418-0bd1-458f-a002-96eb9595a1ad" name="Changes" comment="Update README.md">
-      <change afterPath="$PROJECT_DIR$/back-end/src/api/Components/carreras_get_component.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/back-end/src/api/Services/carreras_get_service.py" afterDir="false" />
+    <list default="true" id="0f624418-0bd1-458f-a002-96eb9595a1ad" name="Changes" comment="Update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/api/Routes/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Routes/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/ERR_23_07_2024.log" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/ERR_23_07_2024.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_23_07_2024.log" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_23_07_2024.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/api/Components/like_component.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Components/like_component.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/api/Components/publicacion_component.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Components/publicacion_component.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/api/Components/unlike_component.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Components/unlike_component.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/api/Services/like_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Services/like_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/api/Services/publicacion_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Services/publicacion_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/api/Services/unlike_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Services/unlike_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_24_07_2024.log" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_24_07_2024.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -224,6 +225,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Update README.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update README.md" />
+    <MESSAGE value="Update" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update" />
   </component>
 </project>

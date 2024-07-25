@@ -3,8 +3,7 @@ from flask_restful import Resource
 from src.utils.general.logs import HandleLogs
 from src.utils.general.response import response_error, response_success
 from ..Components.like_component import LikeComponent
-from ..Components.jwt_component import  JwtComponent
-
+from ..Components.jwt_component import JwtComponent
 
 class LikeResource(Resource):
     @staticmethod

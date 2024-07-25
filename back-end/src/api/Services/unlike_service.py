@@ -3,7 +3,7 @@ from flask_restful import Resource
 from src.utils.general.logs import HandleLogs
 from src.utils.general.response import response_error, response_success
 from ..Components.unlike_component import UnlikeComponent
-from ..Components.jwt_component import  JwtComponent
+from ..Components.jwt_component import JwtComponent
 
 
 class UnlikeResource(Resource):

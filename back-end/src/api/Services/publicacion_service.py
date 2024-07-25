@@ -3,7 +3,7 @@ from src.utils.general.response import response_error, response_success
 from src.api.Components.publicacion_component import PublicationsComponent
 from flask import request
 from flask_restful import Resource
-from ..Components.jwt_component import  JwtComponent
+from ..Components.jwt_component import JwtComponent
 
 class GetFriendPublicationsService(Resource):
     @staticmethod
