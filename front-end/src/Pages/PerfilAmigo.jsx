@@ -14,7 +14,8 @@ const PerfilAmigo = ({ user }) => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [isFriend, setIsFriend] = useState(false);
+  const [friendsResults, setFriendsResults] = useState([]);
+  const [optimisticUpdate, setOptimisticUpdate] = useState(false);
 
   useEffect(() => {
     const fetchFriendData = async () => {
@@ -23,6 +24,10 @@ const PerfilAmigo = ({ user }) => {
         if (!token) {
           throw new Error('No token found');
         }
+
+        const userLog = sessionStorage.getItem('user');
+        const userLogJson = JSON.parse(userLog);
+        const IdUserLog = userLogJson.user_id;
 
         const response = await axios.post('http://26.127.175.34:5000/user/info', 
           { user_id: friendId }, 
@@ -33,9 +38,28 @@ const PerfilAmigo = ({ user }) => {
           }
         );
 
+        const response2 = await axios.post('http://26.127.175.34:5000/user/info', 
+          { user_id: IdUserLog }, 
+          {
+            headers: {
+              'tokenapp': token
+            }
+          }
+        );     
+
+        const friendsList1 = response.data.message.friends; // amigo
+        const friendsList2 = response2.data.message.friends; // usuario logeado
+
+        const results = friendsList1.map(friend1 => {
+          const isCommon = friendsList2.some(friend2 => friend1.Id_user === friend2.Id_user);
+          return { Id_user: friend1.Id_user, isCommon: isCommon };
+        });
+
+        console.log(results);
+        setFriendsResults(results);
+
         if (response.data.result) {
           setFriendData(response.data);
-          setIsFriend(response.data.isFriend); // Actualiza el estado isFriend
         } else {
           console.error('Error al obtener los datos del amigo:', response.data.message);
           setError(response.data.message);
@@ -55,14 +79,24 @@ const PerfilAmigo = ({ user }) => {
     setSelectedTab(newValue);
   };
 
-  const handleFollow = () => {
-    setIsFriend(true); // Actualiza el estado isFriend
-    console.log('Amigo agregado:', friendId);
+  const handleFollow = async () => {
+    const updatedResults = friendsResults.map(result => 
+      result.Id_user === parseInt(friendId) ? { ...result, isCommon: true } : result
+    );
+    setFriendsResults(updatedResults);
+    setOptimisticUpdate(true);
   };
 
-  const handleUnfollow = () => {
-    setIsFriend(false); // Actualiza el estado isFriend
-    console.log('Amigo eliminado:', friendId);
+  const handleUnfollow = async () => {
+    const updatedResults = friendsResults.map(result => 
+      result.Id_user === parseInt(friendId) ? { ...result, isCommon: false } : result
+    );
+    setFriendsResults(updatedResults);
+    setOptimisticUpdate(true);
+  };
+
+  const isCommonFriend = () => {
+    return friendsResults.some(friend => friend.Id_user === parseInt(friendId) && friend.isCommon);
   };
 
   const renderTabContent = () => {
@@ -99,13 +133,24 @@ const PerfilAmigo = ({ user }) => {
         return (
           <VerAmigos 
             user={friendData.message.user.Id_user} 
-            renderFriendActions={(friend) => (
-              <EliminarFollow 
-                userId={user.user_id} 
-                friendId={friend.Id_user} 
-                onUnfollow={handleUnfollow} 
-              />
-            )}
+            renderFriendActions={(friend) => {
+              const isCommon = friendsResults.some(result => result.Id_user === friend.Id_user && result.isCommon);
+              return isCommon ? (
+                <EliminarFollow 
+                  key={friend.Id_user}
+                  userId={user.user_id} 
+                  friendId={friend.Id_user} 
+                  onUnfollow={handleUnfollow} 
+                />
+              ) : (
+                <AgregarFollow 
+                  key={friend.Id_user}
+                  userId={user.user_id} 
+                  friendId={friend.Id_user} 
+                  onFollow={handleFollow} 
+                />
+              );
+            }}
           />
         );
       default:
@@ -139,10 +184,18 @@ const PerfilAmigo = ({ user }) => {
           />
           <Typography variant="h4">{friendData.message.user.nombres}</Typography>
           <Box sx={{ ml: 'auto' }}>
-            {isFriend ? (
-              <EliminarFollow userId={user.user_id} friendId={friendId} onUnfollow={handleUnfollow} />
+            {isCommonFriend() ? (
+              <EliminarFollow 
+                userId={user.user_id} 
+                friendId={friendId} 
+                onUnfollow={handleUnfollow} 
+              />
             ) : (
-              <AgregarFollow userId={user.user_id} friendId={friendId} onFollow={handleFollow} />
+              <AgregarFollow 
+                userId={user.user_id} 
+                friendId={friendId} 
+                onFollow={handleFollow} 
+              />
             )}
           </Box>
         </Box>

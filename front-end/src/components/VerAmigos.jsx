@@ -19,6 +19,7 @@ const VerAmigos = ({ user, renderFriendActions }) => {
           throw new Error('No token found');
         }
 
+
         const response = await axios.post('http://26.127.175.34:5000/user/get_friends', 
           { user_id: user }, 
           {
@@ -46,13 +47,20 @@ const VerAmigos = ({ user, renderFriendActions }) => {
     }
   }, [user]);
 
+  const filteredFriends = friends.filter(friend => {
+    const userLog = sessionStorage.getItem('user');
+    const uselLogJson = JSON.parse(userLog)
+    const IdUserLog = uselLogJson.user_id
+    return friend.Id_user !== IdUserLog;
+  });
+
   return (
     <Box>
       {loading ? (
         <CircularProgress sx={{ mt: 2 }} />
       ) : (
         <Grid container spacing={2}>
-          {friends.map((friend) => (
+          {filteredFriends.map((friend) => (
             <Grid item xs={12} sm={6} key={friend.Id_user}>
               <Paper sx={{ p: 2, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <Box sx={{ display: "flex", alignItems: "center" }}>

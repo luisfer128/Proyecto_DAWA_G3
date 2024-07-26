@@ -12,7 +12,7 @@ from ..Services.amigo_sugerido_service import SuggestedFriendsResource
 from ..Services.amigos_usuario_service import FriendsResource
 from ..Services.carreras_get_service import CareersResource
 from ..Services.publicacion_usuario_service import GetUserPublicationsService
-
+from ..Services.user_service import UserByIdService
 
 def load_routes(api):
     # Metodo para el login
@@ -43,3 +43,5 @@ def load_routes(api):
     api.add_resource(CareersResource, '/api/carreras')
     # Método para obtener publicaciones del usuario
     api.add_resource(GetUserPublicationsService, '/user/publications')
+    # Metodo para usuario por Id
+    api.add_resource(UserByIdService, '/user/info')

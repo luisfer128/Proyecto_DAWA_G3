@@ -209,10 +209,18 @@ export default function PrimarySearchAppBar({ user }) {
   };
 
   const handleResultClick = (userId) => {
-    setIsSearchFocused(false);
-    setSearchQuery('');
-    setSearchResults([]);
-    navigate(`/amigo/${userId}`);
+    const userLog = sessionStorage.getItem('user');
+    const userLogJson = JSON.parse(userLog);
+    const IdUserLog = userLogJson.user_id;
+    console.log("")
+    if(userId === IdUserLog ){
+      navigate(`/perfil`);
+    }else{
+      setIsSearchFocused(false);
+      setSearchQuery('');
+      setSearchResults([]);
+      navigate(`/amigo/${userId}`);
+    }    
   };
 
   const menuId = 'primary-search-account-menu';

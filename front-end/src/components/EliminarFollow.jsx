@@ -6,13 +6,11 @@ import AgregarFollow from './AgregarFollow';
 const EliminarFollow = ({ userId, friendId, onUnfollow }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
   const [isUnfollowed, setIsUnfollowed] = useState(false);
 
   const handleUnfollow = async () => {
     setLoading(true);
     setError('');
-    setSuccessMessage('');
     try {
       const token = sessionStorage.getItem('token');
       if (!token) {
@@ -59,9 +57,6 @@ const EliminarFollow = ({ userId, friendId, onUnfollow }) => {
           )}
           {error && (
             <Typography color="error" sx={{ mt: 2 }}>{error}</Typography>
-          )}
-          {successMessage && (
-            <Typography color="primary" sx={{ mt: 2 }}>{successMessage}</Typography>
           )}
         </>
       )}

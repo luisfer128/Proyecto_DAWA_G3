@@ -5,12 +5,10 @@ import { Button, CircularProgress, Typography } from '@mui/material';
 const AgregarFollow = ({ userId, friendId, onFollow }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
 
   const handleFollow = async () => {
     setLoading(true);
     setError('');
-    setSuccessMessage('');
     try {
       const token = sessionStorage.getItem('token');
       if (!token) {
@@ -30,7 +28,6 @@ const AgregarFollow = ({ userId, friendId, onFollow }) => {
       );
 
       if (response.data.result) {
-        setSuccessMessage('Amigo agregado con éxito');
         onFollow(friendId); // Llama a la función onFollow para actualizar la lista de amigos
       } else {
         setError(response.data.message || 'Error al agregar amigo');
@@ -53,9 +50,6 @@ const AgregarFollow = ({ userId, friendId, onFollow }) => {
       )}
       {error && (
         <Typography color="error" sx={{ mt: 2 }}>{error}</Typography>
-      )}
-      {successMessage && (
-        <Typography color="primary" sx={{ mt: 2 }}>{successMessage}</Typography>
       )}
     </>
   );
