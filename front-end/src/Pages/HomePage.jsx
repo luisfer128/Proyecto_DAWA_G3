@@ -60,7 +60,9 @@ const HomePage = ({ user }) => {
                             user_name={user.user_name} 
                             onCommentAdded={handleCommentAdded} 
                         />
+                        
                     </Box>
+                    
                 </Box>
             </Container>
         </div>
