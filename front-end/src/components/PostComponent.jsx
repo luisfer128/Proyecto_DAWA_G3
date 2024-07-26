@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Box, Typography, Paper, Avatar, Accordion, AccordionSummary, AccordionDetails, Button } from '@mui/material';
+import { Box, Typography, Paper, Avatar, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LikePost from './LikePost';
 import AddComentario from './AddComentario';
 
-const Post = ({ publicationId, userId, userName, content, comments, avatarUrl, onCommentAdded, currentUserName }) => {
+const Post = ({ publicationId, userId, userName, content, comments, avatarUrl, 
+    likes, userLiked, onCommentAdded, onLikeUpdated, currentUserName }) => {
+
     const [expanded, setExpanded] = useState(false);
 
     const handleCommentAdded = (newComment) => {
@@ -13,7 +15,9 @@ const Post = ({ publicationId, userId, userName, content, comments, avatarUrl, o
             user_id: userId,
             publicacion_user_name: userName,
             texto: content,
-            comentarios: [...comments, newComment]
+            comentarios: [...comments, newComment],
+            likes,
+            user_liked: userLiked
         };
         onCommentAdded(updatedPost);
     };
@@ -31,7 +35,13 @@ const Post = ({ publicationId, userId, userName, content, comments, avatarUrl, o
             
             <Typography variant="body1" sx={{ marginBottom: '16px' }}>{content || "No hay texto en la publicación"}</Typography>
             
-            <LikePost publicationId={publicationId} userId={userId} />
+            <LikePost 
+                publicationId={publicationId}
+                userId={userId}
+                initialLikes={likes}
+                initialLiked={userLiked}
+                onLikeUpdated={onLikeUpdated}
+            />
             
             <Accordion expanded={expanded} onChange={handleAccordionChange} sx={{ marginTop: '16px', width: '100%' }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -64,7 +74,7 @@ const Post = ({ publicationId, userId, userName, content, comments, avatarUrl, o
     );
 };
 
-function PostComponent({ posts, user_id, user_name, onCommentAdded }) {
+function PostComponent({ posts, user_id, user_name, onCommentAdded, onLikeUpdated }) {
     if (!posts) return <Typography variant="body1">No se encontraron publicaciones.</Typography>;
 
     if (posts.length === 0) {
@@ -83,8 +93,12 @@ function PostComponent({ posts, user_id, user_name, onCommentAdded }) {
                         userName={post.publicacion_user_name}
                         content={post.texto}
                         comments={post.comentarios}
+                        
+                        likes={post.total_likes} // Usa total_likes para los likes
+                        userLiked={post.user_liked} // Usa user_liked para el estado de like
                         currentUserName={user_name} 
                         onCommentAdded={onCommentAdded}
+                        onLikeUpdated={onLikeUpdated}
                     />
                 </Box>
             ))}
