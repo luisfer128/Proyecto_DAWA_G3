@@ -4,6 +4,20 @@
     padding-right: 12px;
 }
 
-.icon-button-hover:hover {
-    background-color: yellow;
-}
+.custom-scroll::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  
+  .custom-scroll {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .search-result-item {
+    cursor: pointer;
+  }
+  
+  .search-result-item:hover {
+    background-color: #f0f0f0;
+  }
+  

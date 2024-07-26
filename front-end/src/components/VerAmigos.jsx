@@ -20,15 +20,13 @@ const VerAmigos = ({ user, renderFriendActions }) => {
         }
 
         const response = await axios.post('http://26.127.175.34:5000/user/get_friends', 
-          { user_id: user.user_id }, 
+          { user_id: user }, 
           {
             headers: {
               'tokenapp': token
             }
           }
         );
-
-        console.log('Respuesta del servidor:', response.data);
 
         if (response.data.result) {
           setFriends(response.data.data);

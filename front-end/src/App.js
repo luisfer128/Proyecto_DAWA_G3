@@ -6,6 +6,7 @@ import RecuperarPass from './Pages/RecuperarPass';
 import HomePage from './Pages/HomePage';
 import Register from './Pages/RegisterForm';
 import Perfil from './Pages/Perfil';
+import PerfilAmigo from './Pages/PerfilAmigo'; // Importar el componente PerfilAmigo
 
 function App() {
     const [user, setUser] = useState(null);
@@ -37,11 +38,9 @@ function App() {
                 <Route path="/recuperar-pass" element={<RecuperarPass />} />
                 <Route path="/registro" element={<Register />} />
                 <Route path="/perfil" element={user ? <Perfil user={user} /> : <LoginPage onLoginSuccess={handleLoginSuccess} />} />
+                <Route path="/home" element={user ? <HomePage user={user} roles={roles} /> : <LoginPage onLoginSuccess={handleLoginSuccess} />} />
+                <Route path="/amigo/:friendId" element={<PerfilAmigo user={user} />} /> {/* Nueva ruta para PerfilAmigo */}
                 <Route path="*" element={<LoginPage onLoginSuccess={handleLoginSuccess} />} /> {/* Default to LoginPage */}
-                <Route 
-                    path="/home" 
-                    element={user ? <HomePage user={user} roles={roles} /> : <LoginPage onLoginSuccess={handleLoginSuccess} />} 
-                />
             </Routes>
         </Router>
     );

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
+import { Avatar } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -17,6 +18,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import CircularProgress from '@mui/material/CircularProgress';
+import axios from 'axios';
 import logo from "../assets/login/logo.svg";
 import '../styles/navbar.css';
 
@@ -50,7 +53,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -60,24 +62,42 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar(user) {
+export default function PrimarySearchAppBar({ user }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [modules, setModules] = useState([]);
   const [openMenus, setOpenMenus] = useState([]);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false); // Estado para la barra lateral
-  const [hoveredMenuIndex, setHoveredMenuIndex] = useState(null); // Estado para el índice del menú actualmente seleccionado
-  const navigate = useNavigate(); // Inicializa useNavigate
+  const [drawerOpen, setDrawerOpen] = useState(false); 
+  const [hoveredMenuIndex, setHoveredMenuIndex] = useState(null); 
+  const navigate = useNavigate(); 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const searchRef = useRef(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setIsSearchFocused(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
     const userData = sessionStorage.getItem('user');
     if (userData) {
         const parsedData = JSON.parse(userData);
-        //console.log("test:",parsedData.roles)
         setModules(parsedData.roles[0].modules);
         setOpenMenus(parsedData.roles[0].modules.map(() => false));
     } else {
@@ -111,7 +131,7 @@ export default function PrimarySearchAppBar(user) {
   };
 
   const handleDrawerToggle = () => {
-    setDrawerOpen(!drawerOpen); // Alterna el estado del drawer
+    setDrawerOpen(!drawerOpen); 
   };
 
   const handleMobileMenuOpen = (event) => {
@@ -120,16 +140,16 @@ export default function PrimarySearchAppBar(user) {
 
   const handleProfileClick = () => {
     handleMenuClose();
-    navigate('/perfil'); // Navega a la página de perfil
+    navigate('/perfil'); 
   };
 
   const handleHomeClick = () => {
-    navigate('/home'); // Navega a la página de inicio
+    navigate('/home'); 
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem('token'); // Elimina el token
-    navigate('/'); // Redirige a la página de login
+    sessionStorage.removeItem('token'); 
+    navigate('/'); 
   };
 
   const handleMenuEnter = (index) => {
@@ -148,6 +168,51 @@ export default function PrimarySearchAppBar(user) {
       newState[index] = false;
       return newState;
     });
+  };
+
+  const handleSearchChange = async (event) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+
+    if (query.length > 0) {
+      setLoading(true);
+      setError('');
+      try {
+        const token = sessionStorage.getItem('token');
+        if (!token) {
+          throw new Error('No token found');
+        }
+
+        const response = await axios.get('http://26.127.175.34:5000/user/list', {
+          headers: {
+            'tokenapp': token
+          }
+        });
+
+        if (response.data.result) {
+          const results = response.data.message.filter(user => {
+            const nameParts = user.nombres.toLowerCase().split(' ');
+            return nameParts.some(part => part.startsWith(query.toLowerCase()));
+          });
+          setSearchResults(results);
+        } else {
+          setError(response.data.message || 'Error al obtener los usuarios');
+        }
+      } catch (error) {
+        setError(error.message || 'Error al obtener los usuarios');
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setSearchResults([]);
+    }
+  };
+
+  const handleResultClick = (userId) => {
+    setIsSearchFocused(false);
+    setSearchQuery('');
+    setSearchResults([]);
+    navigate(`/amigo/${userId}`);
   };
 
   const menuId = 'primary-search-account-menu';
@@ -282,14 +347,37 @@ export default function PrimarySearchAppBar(user) {
             </Typography>
           </Box>
           
-          <Search>
+          <Search ref={searchRef}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder="Buscar…"
               inputProps={{ 'aria-label': 'search' }}
+              value={searchQuery}
+              onChange={handleSearchChange}
+              onFocus={() => setIsSearchFocused(true)}
             />
+            {isSearchFocused && searchQuery && (
+              <Box sx={{ position: 'absolute', top: '100%', left: 0, width: '100%', backgroundColor: 'white', zIndex: 1, borderRadius: 1, boxShadow: 1, maxHeight: 200, overflowY: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                className="custom-scroll">
+                {loading ? (
+                  <Box sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>
+                    <CircularProgress size={24} />
+                  </Box>
+                ) : (
+                  searchResults.map((result) => (
+                    <ListItem key={result.Id_user} sx={{ color: 'black', cursor: 'pointer', '&:hover': { backgroundColor: '#f0f0f0' }}} onClick={() => handleResultClick(result.Id_user)}>
+                      <Avatar sx={{ width: 24, height: 24, margin: '8px' }} />
+                      <ListItemText primary={result.nombres || result.usuario} />
+                    </ListItem>
+                  ))
+                )}
+                {error && (
+                  <Typography color="error" sx={{ padding: 2 }}>{error}</Typography>
+                )}
+              </Box>
+            )}
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>          

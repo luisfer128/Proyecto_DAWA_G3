@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Grid } from '@mui/material';
 import PostUserComponent from './PostUserComponent';
-import CrearPost from '../components/CrearPost';
 import axios from 'axios';
 
-const PublicacionUsuario = ({ user }) => {
+const PublicacionAmigo = ({ user }) => {
     const [posts, setPosts] = useState([]);
 
     const fetchPosts = async () => {
@@ -14,13 +13,12 @@ const PublicacionUsuario = ({ user }) => {
                 throw new Error('No token found');
             }
             const response = await axios.post('http://26.127.175.34:5000/user/publications', {
-                user_id: user.user_id,
+                user_id: user.message.user.Id_user,
             }, {
                 headers: {
                     'tokenapp': token
                 }
             });
-            console.log('data:', response);
             if (response.data.result) {
                 setPosts(response.data.data);
             } else {
@@ -50,7 +48,6 @@ const PublicacionUsuario = ({ user }) => {
     return (
         <div>
             <Grid sx={{ marginTop: '28px' }}>
-                <CrearPost user_id={user.user_id} onPostCreated={handlePostCreated} />
                 <PostUserComponent 
                     posts={posts} 
                     user_id={user.user_id} 
@@ -62,4 +59,4 @@ const PublicacionUsuario = ({ user }) => {
     );
 };
 
-export default PublicacionUsuario;
+export default PublicacionAmigo;

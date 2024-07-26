@@ -49,7 +49,7 @@ const Perfil = ({ user }) => {
       case 2:
         return (
           <VerAmigos 
-            user={user} 
+            user={user.user_id} 
             renderFriendActions={(friend) => (
               <EliminarFollow 
                 userId={user.user_id} 
