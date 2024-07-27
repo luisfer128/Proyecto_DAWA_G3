@@ -15,7 +15,8 @@ const PerfilAmigo = ({ user }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [friendsResults, setFriendsResults] = useState([]);
-  const [optimisticUpdate, setOptimisticUpdate] = useState(false);
+  const [bothFriends, setBothFriends] = useState(null);
+  const [updateTrigger, setUpdateTrigger] = useState(false);
 
   useEffect(() => {
     const fetchFriendData = async () => {
@@ -55,8 +56,15 @@ const PerfilAmigo = ({ user }) => {
           return { Id_user: friend1.Id_user, isCommon: isCommon };
         });
 
-        console.log(results);
+        const commonFriend = friendsList2.find(friend2 => friend2.Id_user === parseInt(friendId));
+
+        const bothFriendsResult = commonFriend ? { Id_user: friendId, isCommon: true } : 
+        { Id_user: friendId, isCommon: false };
+
+        console.log("both friend", bothFriendsResult);
+
         setFriendsResults(results);
+        setBothFriends(bothFriendsResult);
 
         if (response.data.result) {
           setFriendData(response.data);
@@ -73,7 +81,7 @@ const PerfilAmigo = ({ user }) => {
     };
 
     fetchFriendData();
-  }, [friendId]);
+  }, [friendId, updateTrigger]);
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
@@ -84,7 +92,7 @@ const PerfilAmigo = ({ user }) => {
       result.Id_user === parseInt(friendId) ? { ...result, isCommon: true } : result
     );
     setFriendsResults(updatedResults);
-    setOptimisticUpdate(true);
+    setUpdateTrigger(!updateTrigger); // Forzar re-renderizado
   };
 
   const handleUnfollow = async () => {
@@ -92,11 +100,11 @@ const PerfilAmigo = ({ user }) => {
       result.Id_user === parseInt(friendId) ? { ...result, isCommon: false } : result
     );
     setFriendsResults(updatedResults);
-    setOptimisticUpdate(true);
+    setUpdateTrigger(!updateTrigger); // Forzar re-renderizado
   };
 
   const isCommonFriend = () => {
-    return friendsResults.some(friend => friend.Id_user === parseInt(friendId) && friend.isCommon);
+    return bothFriends?.isCommon;
   };
 
   const renderTabContent = () => {

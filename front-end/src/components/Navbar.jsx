@@ -212,7 +212,6 @@ export default function PrimarySearchAppBar({ user }) {
     const userLog = sessionStorage.getItem('user');
     const userLogJson = JSON.parse(userLog);
     const IdUserLog = userLogJson.user_id;
-    console.log("")
     if(userId === IdUserLog ){
       navigate(`/perfil`);
     }else{
