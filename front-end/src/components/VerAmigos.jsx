@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Box, Grid, Paper, Typography, CircularProgress, Avatar } from '@mui/material';
 
-const VerAmigos = ({ user, renderFriendActions }) => {
+const VerAmigos = ({ user, renderFriendActions, onFriendsLoaded }) => {
   const [friends, setFriends] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -31,6 +31,9 @@ const VerAmigos = ({ user, renderFriendActions }) => {
 
         if (response.data.result) {
           setFriends(response.data.data);
+          if (onFriendsLoaded) {
+            onFriendsLoaded(response.data.data); 
+          }
         } else {
           setError(response.data.message || 'Error al obtener los amigos');
         }
@@ -45,7 +48,7 @@ const VerAmigos = ({ user, renderFriendActions }) => {
     if (user) {
       fetchFriends();
     }
-  }, [user]);
+  }, [user,onFriendsLoaded]);
 
   const filteredFriends = friends.filter(friend => {
     const userLog = sessionStorage.getItem('user');

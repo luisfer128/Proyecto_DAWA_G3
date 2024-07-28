@@ -1,19 +1,65 @@
 import React, { useState } from 'react';
-import { Box, Container, Avatar, Typography, Tabs, Tab, List, ListItem, ListItemText, Button, IconButton, TextField } from '@mui/material';
-import PrimarySearchAppBar from '../components/Navbar'; // Asegúrate de ajustar la ruta de importación según corresponda
+import { Box, Container, Avatar, Typography, Tabs, Tab, List, ListItem, ListItemText } from '@mui/material';
+import PrimarySearchAppBar from '../components/Navbar'; 
 import VerAmigos from '../components/VerAmigos';
 import EliminarFollow from '../components/EliminarFollow';
 import PublicacionUsuario from '../components/PublicacionUsuario';
+import ModalAviso from '../components/ModalAviso';  
+import ModalError from '../components/ModalError';  
+import axios from 'axios';
 
 const Perfil = ({ user }) => {
   const [selectedTab, setSelectedTab] = useState(0);
+  const [friends, setFriends] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false); 
+  const [selectedFriend, setSelectedFriend] = useState(null); 
+  const [selectedFriendName, setSelectedFriendName] = useState('');  
+  const [errorMessage, setErrorMessage] = useState('');
+
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
 
-  const handleUnfollow = (friendId) => {
-    console.log('Amigo eliminado:', friendId);
+  const handleUnfollow = (friendId, friendName) => {
+    setSelectedFriend(friendId);
+    setSelectedFriendName(friendName);
+    setModalOpen(true); 
+  };
+
+  const confirmUnfollow = async () => {
+    try {
+      const token = sessionStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+  
+      const response = await axios.delete('http://26.127.175.34:5000/user/unfriend', {
+        headers: {
+          'tokenapp': token
+        },
+        data: {
+          Id_user: user.user_id,
+          Id_amigo: selectedFriend
+        }
+      });
+  
+      if (response.data.result) {
+        setFriends(prev => prev.filter(friend => friend.Id_user !== selectedFriend));
+        setModalOpen(false); 
+      } else {
+        setErrorMessage(response.data.message || 'Error al eliminar amigo');
+      }
+    } catch (err) {
+      setErrorMessage(err.message || 'Error al eliminar amigo');
+    } finally {
+      setModalOpen(false);  
+    }
+  };
+  
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
   };
 
   const renderTabContent = () => {
@@ -50,11 +96,12 @@ const Perfil = ({ user }) => {
         return (
           <VerAmigos 
             user={user.user_id} 
+            setFriends={setFriends}
             renderFriendActions={(friend) => (
               <EliminarFollow 
                 userId={user.user_id} 
                 friendId={friend.Id_user} 
-                onUnfollow={handleUnfollow} 
+                onUnfollow={() => handleUnfollow(friend.Id_user, friend.nombres)} 
               />
             )}
           />
@@ -88,6 +135,18 @@ const Perfil = ({ user }) => {
         <Box sx={{ mt: 4 }}>
           {renderTabContent()}
         </Box>
+
+        <ModalAviso
+          open={modalOpen}
+          handleClose={handleCloseModal}
+          errorMessage={`Dejaste de seguir a ${selectedFriendName}`}
+          onConfirm={confirmUnfollow}
+        />
+        <ModalError
+          open={!!errorMessage}
+          handleClose={() => setErrorMessage('')}
+          errorMessage={errorMessage}
+        />
       </Container>
     </>
   );

@@ -7,6 +7,7 @@ import HomePage from './Pages/HomePage';
 import Register from './Pages/RegisterForm';
 import Perfil from './Pages/Perfil';
 import PerfilAmigo from './Pages/PerfilAmigo'; // Importar el componente PerfilAmigo
+import SuggestedFriendsPage from './Pages/SuggestFriendPage';
 
 function App() {
     const [user, setUser] = useState(null);
@@ -37,6 +38,7 @@ function App() {
             <Routes>
                 <Route path="/recuperar-pass" element={<RecuperarPass />} />
                 <Route path="/registro" element={<Register />} />
+                <Route path="/sugerencias-amigos" element={user ? <SuggestedFriendsPage user={user} />: <LoginPage onLoginSuccess={handleLoginSuccess} />} />
                 <Route path="/perfil" element={user ? <Perfil user={user} /> : <LoginPage onLoginSuccess={handleLoginSuccess} />} />
                 <Route path="/home" element={user ? <HomePage user={user} roles={roles} /> : <LoginPage onLoginSuccess={handleLoginSuccess} />} />
                 <Route path="/amigo/:friendId" element={<PerfilAmigo user={user} />} /> {/* Nueva ruta para PerfilAmigo */}

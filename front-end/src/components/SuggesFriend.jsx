@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Typography, Avatar, CircularProgress, Button } from "@mui/material";
+import { Box, Typography, Avatar, CircularProgress } from "@mui/material";
 import AgregarFollow from "./AgregarFollow";
 import EliminarFollow from "./EliminarFollow";
 import ModalAviso from "./ModalAviso";
 
-function SuggestFriend({ user_id }) {
+function SuggestFriend({ user_id, followedFriends, onFollow, onUnfollow }) {
     const [suggestedFriends, setSuggestedFriends] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [followedFriends, setFollowedFriends] = useState(new Set());
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedFriend, setSelectedFriend] = useState(null);
     const [selectedFriendName, setSelectedFriendName] = useState('');
@@ -31,7 +30,9 @@ function SuggestFriend({ user_id }) {
                 });
 
                 if (response.data.result) {
-                    setSuggestedFriends(response.data.data);
+                    // Filtra amigos ya seguidos
+                    const filteredFriends = response.data.data.filter(friend => !followedFriends.includes(friend.Id_user));
+                    setSuggestedFriends(filteredFriends);
                 } else {
                     throw new Error(response.data.message || 'Error al sugerir amigos');
                 }
@@ -42,37 +43,15 @@ function SuggestFriend({ user_id }) {
             }
         };
 
-        const fetchFollowedFriends = async () => {
-            try {
-                const token = sessionStorage.getItem('token');
-                if (!token) {
-                    throw new Error('No token found');
-                }
-
-                const response = await axios.get('http://26.127.175.34:5000/user/followed_friends', {
-                    headers: {
-                        'tokenapp': token 
-                    }
-                });
-
-                if (response.data.result) {
-                    setFollowedFriends(new Set(response.data.data.map(friend => friend.Id_user)));
-                } else {
-                    throw new Error(response.data.message || 'Error al obtener amigos seguidos');
-                }
-            } catch (err) {
-                console.error(err.message);
-            }
-        };
-
         if (user_id) {
             fetchSuggestedFriends();
-            fetchFollowedFriends();
         }
-    }, [user_id]);
+    }, [user_id, followedFriends]); // followedFriends es la dependencia para actualizar sugerencias cuando cambia
 
     const handleFollow = (friendId) => {
-        setFollowedFriends(prev => new Set(prev.add(friendId)));
+        if (onFollow) {
+            onFollow(friendId);
+        }
     };
 
     const handleUnfollow = (friendId, friendName) => {
@@ -99,14 +78,9 @@ function SuggestFriend({ user_id }) {
             });
 
             if (response.data.result) {
-                setFollowedFriends(prev => {
-                    const newSet = new Set(prev);
-                    newSet.delete(selectedFriend);
-                    return newSet;
-                });
-                setSuggestedFriends(prev => [
-                    ...prev, 
-                ]);
+                if (onUnfollow) {
+                    onUnfollow(selectedFriend);
+                }
             } else {
                 console.error(response.data.message || 'Error al eliminar amigo');
             }
@@ -133,12 +107,16 @@ function SuggestFriend({ user_id }) {
         <>
             <Box 
                 sx={{ 
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
                     bgcolor: 'background.paper', 
                     padding: '16px',
                     borderRadius: '8px',
                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                     width: '100%',
                     maxWidth: '400px',
+                    margin: '0 auto'
                 }}
             >
                 <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', mb: 2 }}>
@@ -171,7 +149,6 @@ function SuggestFriend({ user_id }) {
                                     width: 40, 
                                     height: 40, 
                                     fontSize: '1.2rem', 
-                                    bgcolor: '#1DA1F2', 
                                     color: '#fff',
                                     border: '2px solid #fff'
                                 }}
@@ -187,7 +164,7 @@ function SuggestFriend({ user_id }) {
                                     {friend.nombres}
                                 </Typography>
                             </Box>
-                            {followedFriends.has(friend.Id_user) ? (
+                            {followedFriends.includes(friend.Id_user) ? (
                                 <EliminarFollow
                                     userId={user_id}
                                     friendId={friend.Id_user}
@@ -197,7 +174,7 @@ function SuggestFriend({ user_id }) {
                                 <AgregarFollow
                                     userId={user_id}
                                     friendId={friend.Id_user}
-                                    onFollow={handleFollow}
+                                    onFollow={() => handleFollow(friend.Id_user)}
                                 />
                             )}
                         </Box>
