@@ -21,6 +21,7 @@ const PerfilAmigo = ({ user }) => {
   useEffect(() => {
     const fetchFriendData = async () => {
       try {
+        setLoading(true);
         const token = sessionStorage.getItem('token');
         if (!token) {
           throw new Error('No token found');
@@ -55,13 +56,11 @@ const PerfilAmigo = ({ user }) => {
           const isCommon = friendsList2.some(friend2 => friend1.Id_user === friend2.Id_user);
           return { Id_user: friend1.Id_user, isCommon: isCommon };
         });
-
+        
         const commonFriend = friendsList2.find(friend2 => friend2.Id_user === parseInt(friendId));
 
         const bothFriendsResult = commonFriend ? { Id_user: friendId, isCommon: true } : 
         { Id_user: friendId, isCommon: false };
-
-        console.log("both friend", bothFriendsResult);
 
         setFriendsResults(results);
         setBothFriends(bothFriendsResult);
@@ -81,6 +80,7 @@ const PerfilAmigo = ({ user }) => {
     };
 
     fetchFriendData();
+    setSelectedTab(0); // Restablecer la pestaña seleccionada a 0 al cambiar de perfil
   }, [friendId, updateTrigger]);
 
   const handleTabChange = (event, newValue) => {

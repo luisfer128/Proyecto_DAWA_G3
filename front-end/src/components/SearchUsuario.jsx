@@ -41,6 +41,17 @@ const SearchUsuario = () => {
     fetchUsuarios();
   }, []);
 
+  const handleResultClick = (userId) => {
+    const userLog = sessionStorage.getItem('user');
+    const userLogJson = JSON.parse(userLog);
+    const IdUserLog = userLogJson.user_id;
+    if (userId === IdUserLog) {
+      window.location.href = `/perfil`; // Recargar completamente para el perfil del usuario actual
+    } else {
+      window.location.href = `/amigo/${userId}`; // Recargar completamente para el perfil del amigo
+    }
+  };
+
   return (
     <Box>
       {loading ? (
@@ -48,7 +59,7 @@ const SearchUsuario = () => {
       ) : (
         <List>
           {usuarios.map((usuario) => (
-            <ListItem key={usuario.Id_user}>
+            <ListItem key={usuario.Id_user} button onClick={() => handleResultClick(usuario.Id_user)}>
               <ListItemText primary={usuario.nombres || usuario.usuario} />
             </ListItem>
           ))}

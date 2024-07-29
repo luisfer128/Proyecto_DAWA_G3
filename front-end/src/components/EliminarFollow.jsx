@@ -16,8 +16,6 @@ const EliminarFollow = ({ userId, friendId, onUnfollow }) => {
       if (!token) {
         throw new Error('No token found');
       }
-      //console.log("id_usuario:", userId);
-      //console.log("id_amigo:", friendId);
 
       const response = await axios.delete('http://26.127.175.34:5000/user/unfriend', {
         headers: {

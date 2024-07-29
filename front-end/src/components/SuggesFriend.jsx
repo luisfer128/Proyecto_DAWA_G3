@@ -4,11 +4,13 @@ import { Box, Typography, Avatar, CircularProgress } from "@mui/material";
 import AgregarFollow from "./AgregarFollow";
 import EliminarFollow from "./EliminarFollow";
 import ModalAviso from "./ModalAviso";
+import ModalError from "./ModalError";
 
-function SuggestFriend({ user_id, followedFriends, onFollow, onUnfollow }) {
+function SuggestFriend({ user_id }) {
     const [suggestedFriends, setSuggestedFriends] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [followedFriends, setFollowedFriends] = useState(new Set());
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedFriend, setSelectedFriend] = useState(null);
     const [selectedFriendName, setSelectedFriendName] = useState('');
@@ -20,39 +22,59 @@ function SuggestFriend({ user_id, followedFriends, onFollow, onUnfollow }) {
                 if (!token) {
                     throw new Error('No token found');
                 }
-
+            
+                const userLog = sessionStorage.getItem('user');
+                const userLogJson = JSON.parse(userLog);
+                const IdUserLog = userLogJson.user_id;
+            
+                // Obtener amigos sugeridos
                 const response = await axios.post('http://26.127.175.34:5000/user/suggested_friends', {
-                    user_id,
-                }, { 
+                    user_id: IdUserLog,
+                }, {
                     headers: {
-                        'tokenapp': token 
+                        'tokenapp': token
                     }
                 });
-
-                if (response.data.result) {
-                    // Filtra amigos ya seguidos
-                    const filteredFriends = response.data.data.filter(friend => !followedFriends.includes(friend.Id_user));
+            
+                // Obtener amigos actuales
+                const responseAmigos = await axios.post('http://26.127.175.34:5000/user/get_friends', 
+                    { user_id: IdUserLog }, 
+                    {
+                        headers: {
+                            'tokenapp': token
+                        }
+                    }
+                );
+            
+                if (response.data.result && responseAmigos.data.result) {
+                    const suggestedFriends = response.data.data;
+                    const currentFriends = responseAmigos.data.data;
+            
+                    // Filtrar amigos sugeridos que no están en la lista de amigos actuales
+                    const filteredFriends = suggestedFriends.filter(suggestedFriend => {
+                        return !currentFriends.some(currentFriend => currentFriend.Id_user === suggestedFriend.Id_user);
+                    });
+            
                     setSuggestedFriends(filteredFriends);
                 } else {
-                    throw new Error(response.data.message || 'Error al sugerir amigos');
+                    throw new Error('Error al obtener amigos sugeridos o amigos actuales');
                 }
             } catch (err) {
                 setError(err.message);
             } finally {
                 setLoading(false);
             }
+            
         };
 
         if (user_id) {
             fetchSuggestedFriends();
         }
-    }, [user_id, followedFriends]); // followedFriends es la dependencia para actualizar sugerencias cuando cambia
+    }, [user_id]);
 
     const handleFollow = (friendId) => {
-        if (onFollow) {
-            onFollow(friendId);
-        }
-    };
+        setFollowedFriends(prev => new Set(prev.add(friendId)));
+      };
 
     const handleUnfollow = (friendId, friendName) => {
         setSelectedFriend(friendId);
@@ -78,14 +100,19 @@ function SuggestFriend({ user_id, followedFriends, onFollow, onUnfollow }) {
             });
 
             if (response.data.result) {
-                if (onUnfollow) {
-                    onUnfollow(selectedFriend);
-                }
+                setFollowedFriends(prev => {
+                    const newSet = new Set(prev);
+                    newSet.delete(selectedFriend);
+                    return newSet;
+                });
+                setSuggestedFriends(prev => [
+                    ...prev, 
+                ]);
             } else {
-                console.error(response.data.message || 'Error al eliminar amigo');
+                throw new Error(response.data.message || 'Error al eliminar amigo');
             }
         } catch (err) {
-            console.error(err.message || 'Error al eliminar amigo');
+            setError(err.message);
         } finally {
             setModalOpen(false);
         }
@@ -100,7 +127,13 @@ function SuggestFriend({ user_id, followedFriends, onFollow, onUnfollow }) {
     }
 
     if (error) {
-        return <Typography variant="body1" color="error">{error}</Typography>;
+        return (
+            <ModalError
+                open={true}
+                handleClose={() => setError(null)}
+                errorMessage={error}
+            />
+        );
     }
 
     return (
@@ -164,7 +197,7 @@ function SuggestFriend({ user_id, followedFriends, onFollow, onUnfollow }) {
                                     {friend.nombres}
                                 </Typography>
                             </Box>
-                            {followedFriends.includes(friend.Id_user) ? (
+                            {followedFriends.has(friend.Id_user) ? (
                                 <EliminarFollow
                                     userId={user_id}
                                     friendId={friend.Id_user}

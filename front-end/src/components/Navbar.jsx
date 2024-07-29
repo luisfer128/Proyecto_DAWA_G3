@@ -142,6 +142,10 @@ export default function PrimarySearchAppBar({ user }) {
     handleMenuClose();
     navigate('/perfil'); 
   };
+  const handleFriendsSuggest = () => {
+    handleMenuClose();
+    navigate('/sugerencias-amigos')
+  }
 
   const handleHomeClick = () => {
     navigate('/home'); 
@@ -240,6 +244,7 @@ export default function PrimarySearchAppBar({ user }) {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleProfileClick}>Perfil</MenuItem>
+      <MenuItem onClick={handleFriendsSuggest}>Amigos Sugeridos</MenuItem>
       <MenuItem onClick={handleLogout}>Cerrar Sesion</MenuItem>
     </Menu>
   );
@@ -278,6 +283,11 @@ export default function PrimarySearchAppBar({ user }) {
         </IconButton>
         <p>Perfil</p>    
       </MenuItem>
+      <MenuItem onClick={handleFriendsSuggest}>
+        <Typography>
+          Amigos Sugeridos
+        </Typography>
+      </MenuItem>
       <MenuItem onClick={handleLogout}>
         <Typography>
           Cerrar Sesion
@@ -306,7 +316,7 @@ export default function PrimarySearchAppBar({ user }) {
             {openMenus[index] && module.menu.map(menuItem => (
               <List component="div" disablePadding key={menuItem.menu_id}>
                 <ListItem button sx={{ pl: 4 }} onClick={() => navigate(menuItem.route)}> {/* Asegúrate de tener la ruta correcta */}
-                  <ListItemText primary={menuItem.nombre} />
+                  <ListItemText primary={menuItem.nombre} onClick={ navigate(menuItem.descripcion)} />
                 </ListItem>
               </List>
             ))}

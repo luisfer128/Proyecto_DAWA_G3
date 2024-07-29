@@ -3,7 +3,7 @@ import { Box, Typography, TextField, Button, CircularProgress } from '@mui/mater
 import axios from 'axios';
 import SendIcon from '@mui/icons-material/Send';
 
-function AddComentario({ publicationId, userId, userName, onCommentAdded }) { // Añadir userName
+function AddComentario({ publicationId, userId, userName, onCommentAdded }) { 
     const [commentText, setCommentText] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -41,7 +41,7 @@ function AddComentario({ publicationId, userId, userName, onCommentAdded }) { //
                 };
                 setCommentText('');
                 setCharactersLeft(250);
-                onCommentAdded(newComment); // Pasar el nuevo comentario
+                onCommentAdded(newComment); 
             } else {
                 setError(response.data.message || 'Error al agregar el comentario');
             }
