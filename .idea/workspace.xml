@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f624418-0bd1-458f-a002-96eb9595a1ad" name="Changes" comment="Agg publicacion_usuario">
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Components/noticias_component.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/back-end/src/api/Services/noticias_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/api/Components/jwt_component.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Components/jwt_component.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/ERR_26_07_2024.log" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/ERR_26_07_2024.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_26_07_2024.log" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_26_07_2024.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/src/components/Navbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/components/Navbar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/api/Routes/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/api/Routes/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_27_07_2024.log" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_27_07_2024.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
