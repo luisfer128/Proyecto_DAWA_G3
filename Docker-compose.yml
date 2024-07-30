@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Luisfer12354
+      POSTGRES_DB: proyecto_g3
+    ports:
+      - '5433:5432'
+    volumes:
+      - ./postgresdata:/var/lib/postgresql/data
+    networks:
+      - network_leccion
+    container_name: postgres_container
+
+  back-end:
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile
+    container_name: backend_proyecto
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - AMBIENTE=DOCKER
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=dawa_leccion
+      - DB_USER=postgres
+      - DB_PASSWORD=Luisfer12354
+    ports:
+      - '5000:5000'
+    networks:
+      - network_leccion
+
+  front-end:
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    container_name: frontend_proyecto
+    restart: always
+    ports:
+      - '3000:3000'
+    networks:
+      - network_leccion
+
+networks:
+  network_leccion:
+    driver: bridge
