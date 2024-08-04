@@ -88,7 +88,7 @@ function LoginPage({ onLoginSuccess }) {
                             />
                             <TextField
                                 label="Contraseña"
-                                type="text"
+                                type="password"
                                 value={login_password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 fullWidth

@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0f624418-0bd1-458f-a002-96eb9595a1ad" name="Changes" comment="Agg publicacion_usuario">
-      <change afterPath="$PROJECT_DIR$/Docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-end/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-end/nginx.conf" afterDir="false" />
+    <list default="true" id="0f624418-0bd1-458f-a002-96eb9595a1ad" name="Changes" comment="Docker agg">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_29_07_2024.log" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/general/LOGS/LOG_29_07_2024.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/back-end/src/utils/general/config.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/back-end/src/utils/general/config.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/src/Pages/LoginPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/src/Pages/LoginPage.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -223,7 +220,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721899859323</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Docker agg">
+      <option name="closed" value="true" />
+      <created>1722351848440</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1722351848440</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -242,6 +247,7 @@
     <MESSAGE value="Update" />
     <MESSAGE value="Update like, unlkike y publicacion" />
     <MESSAGE value="Agg publicacion_usuario" />
-    <option name="LAST_COMMIT_MESSAGE" value="Agg publicacion_usuario" />
+    <MESSAGE value="Docker agg" />
+    <option name="LAST_COMMIT_MESSAGE" value="Docker agg" />
   </component>
 </project>
